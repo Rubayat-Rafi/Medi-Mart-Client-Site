@@ -1,7 +1,7 @@
 
 const Home = () => {
     return (
-        <div>
+        <div className=" min-h-[calc(100vh-288px)] ">
             This is Home page
         </div>
     );
