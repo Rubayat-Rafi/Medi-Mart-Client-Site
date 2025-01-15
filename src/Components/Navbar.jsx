@@ -6,16 +6,16 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { IoLanguage } from "react-icons/io5";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink to="/">Home</NavLink>
+        <NavLink to="/" >Home</NavLink>
       </li>
       <li>
-        <NavLink to="/shop">Shop</NavLink>
+        <NavLink to="/shop" >Shop</NavLink>
       </li>
     </>
   );
@@ -23,12 +23,12 @@ const Navbar = () => {
     <div className="bg-base-100 shadow-lg">
       <nav className="navbar mx-auto max-w-[1440px]">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl">MediMart</a>
+          <a className=" text-xl font-bold text-primaryTextColor">MediMart</a>
         </div>
         <div className="flex-none">
           <ul className="menu menu-horizontal px-1">{links}</ul>
           <Menu>
-            <MenuButton className="inline-flex items-center gap-2 rounded-md bg-gray-800 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white">
+            <MenuButton className="inline-flex items-center gap-2 rounded-md bg-mainColor py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-secondBgColor data-[open]:bg-secondBgColor data-[focus]:outline-1 data-[focus]:outline-white">
               Lan
               <IoLanguage />
             </MenuButton>
@@ -50,9 +50,15 @@ const Navbar = () => {
               </MenuItem>
             </MenuItems>
           </Menu>
-            <Button className=" mx-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white">
+
+          {/* join us button  */}
+          <Link to='/join-us'>
+            <Button className=" mx-2 rounded-md bg-mainColor py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-secondBgColor data-[open]:bg-secondBgColor data-[focus]:outline-1 data-[focus]:outline-white">
               Join US 
             </Button>
+          </Link>
+
+
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
