@@ -1,14 +1,16 @@
 import { FaGoogle, FaFacebook } from "react-icons/fa";
 import useAuth from "../hook/useAuth";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
-  const { signInUser } = useAuth();
+  const { signInUser , handleGoogle} = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
 
 
@@ -18,12 +20,21 @@ const SignIn = () => {
     const password = data.password;
 
     try{
-     await signInUser(email, password)
+     await signInUser(email, password);
+     navigate('/')
     }catch(error){
       console.log(error)
     }
+  }
 
-    
+  // handle Google SignIn 
+  const handleGoogleSignIn = async () => {
+    try {
+      await handleGoogle();
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -93,7 +104,7 @@ const SignIn = () => {
         <div className="border-t w-full"></div>
       </div>
       <div className="flex justify-center gap-4">
-        <button className="flex items-center px-4 py-2 border rounded-lg">
+        <button onClick={handleGoogleSignIn} className="flex items-center px-4 py-2 border rounded-lg">
           <FaGoogle className="mr-2" />
           Google
         </button>
