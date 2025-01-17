@@ -1,15 +1,43 @@
 import { useForm } from "react-hook-form";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
+import useAuth from "../hook/useAuth";
+import { imageUpload } from "../utilities/utils";
 
 
 const SignUp = () => {
+  const {createUser, setUser, updateUser} = useAuth()
 
 const {register, handleSubmit, formState: {errors},} = useForm();
 
-  const handleSignUpForm = data => {
+  const handleSignUpForm = async(data) => {
     // data.preventDefault()
     console.log(data)
+    const email = data.email;
+    const username = data.username;
+    const password = data.password;
+    const image = data.photo[0];
+
+    // sent image data to imgbb with imageUpload hook 
+    const photoURL = await imageUpload(image);
+    console.log(photoURL)
+    
+
+    try{
+    const result = await createUser(email, password)
+    await updateUser(username, photoURL)
+    setUser(result)
+
+    }catch(error){
+      console.log(error)
+    }
+
+
+
   }
+
+
+
+
 
   return (
     <div className="p-6">

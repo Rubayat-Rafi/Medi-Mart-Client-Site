@@ -3,7 +3,7 @@ import {  NavLink, Outlet } from "react-router-dom";
 const JoinUs = () => {
   return (
     <div className="min-h-[calc(100vh-288px)] flex items-center justify-center">
-      <div className="bg-base-100 md:min-w-[476px] rounded-lg shadow-xl my-10">
+      <div className="bg-base-100 md:min-w-[476px] rounded-lg shadow-xl my-10 border">
         {/* Links  */}
         <div className="flex items-center w-full justify-center">
       <NavLink
