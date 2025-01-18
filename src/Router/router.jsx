@@ -9,6 +9,7 @@ import HomeDash from "../Pages/Dashboard/DashBoard Page/HomeDash";
 import ManageProducts from "../Pages/Dashboard/DashBoard Page/ManageProducts";
 import BannerAdvertise from "../Pages/Dashboard/DashBoard Page/BannerAdvertise";
 import Users from "../Pages/Dashboard/DashBoard Page/Users";
+import CategoryProducts from "../Pages/CategoryProducts";
 
 export const router = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
             {
                 path:'/',
                 element: <Home/>
+            },
+            {
+                path: '/category/:category',
+                element: <CategoryProducts/>
             },
             {
                 path:'/join-us',
