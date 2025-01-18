@@ -5,7 +5,7 @@ import { imageUpload } from "../utilities/utils";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-  const { createUser, setUser, updateUser, handleGoogle } = useAuth();
+  const { createUser, setUser, updateUser, handleGoogle, handleFacebook} = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -39,6 +39,16 @@ const SignUp = () => {
   const handleGoogleSignUp = async () => {
     try {
       await handleGoogle();
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //handle facebook signUp
+  const handleFacebookSignUp = async () => {
+    try {
+      await handleFacebook();
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -166,7 +176,7 @@ const SignUp = () => {
           <FaGoogle className="mr-2" />
           Google
         </button>
-        <button className="flex items-center px-4 py-2 border rounded-lg">
+        <button onClick={handleFacebookSignUp} className="flex items-center px-4 py-2 border rounded-lg">
           <FaFacebook className="mr-2" />
           Facebook
         </button>

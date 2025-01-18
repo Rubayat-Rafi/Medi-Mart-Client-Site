@@ -1,10 +1,17 @@
+import { Helmet } from "react-helmet-async";
+import Banner from "../Components/Banner";
 
 const Home = () => {
-    return (
-        <div className=" min-h-[calc(100vh-288px)] ">
-            This is Home page
-        </div>
-    );
+  return (
+    <>
+      <Helmet>
+        <title>MediMart</title>
+      </Helmet>
+      <div className=" min-h-[calc(100vh-288px)] ">
+        <Banner />
+      </div>
+    </>
+  );
 };
 
 export default Home;

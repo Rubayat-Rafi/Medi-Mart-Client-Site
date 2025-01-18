@@ -1,17 +1,20 @@
 import { createContext, useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import { app } from "../firebase/firebase.config";
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile, signOut, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile, signOut, GoogleAuthProvider, signInWithPopup, FacebookAuthProvider } from "firebase/auth";
+import useAxiosPublic from "../hook/useAxiosPublic";
 
 export const AuthContext = createContext(null)
-const provider = new GoogleAuthProvider();
 const auth = getAuth(app)
+const provider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
 
 
 const AuthProvider = ({children}) => {
-
-const [user, setUser] = useState(null)
-const [loading, setLoading] = useState(true)
+    
+    const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const axiosPublic = useAxiosPublic()
 
 
 //create a new user 
@@ -41,11 +44,19 @@ const logOut = () => {
     return signOut(auth)
 }
 
-// signIn with google 
+// signIn / signUp with google 
 const handleGoogle = () => {
     setLoading(true)
     return signInWithPopup(auth, provider)
 }
+
+// signIn / signUp with Facebook
+const handleFacebook = () => {
+    setLoading(true)
+    return signInWithPopup(auth, facebookProvider)
+} 
+
+
 
 
 
@@ -53,6 +64,20 @@ const handleGoogle = () => {
 useEffect(()=>{
     const subscribe = onAuthStateChanged(auth, (currentUser=>{
         setUser(currentUser)
+        if(currentUser){
+            // get token and store client
+            const userInfo = {email: currentUser.email};
+            axiosPublic.post('/jwt', userInfo)
+            .then(res => {
+                if(res.data.token){
+                    localStorage.setItem('access-token', res.data.token)
+                }
+            })
+        }else{
+            // remove token
+            localStorage.removeItem('access-token')
+
+        }
         setLoading(false)
     }))
 
@@ -60,7 +85,7 @@ useEffect(()=>{
         subscribe();
     }
 
-},[])
+},[axiosPublic])
 
 
 
@@ -74,6 +99,7 @@ useEffect(()=>{
         updateUser,
         logOut,
         handleGoogle,
+        handleFacebook,
     }
 
     console.log(user)

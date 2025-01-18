@@ -1,7 +1,12 @@
+import { Helmet } from "react-helmet-async";
 import {  NavLink, Outlet } from "react-router-dom";
 
 const JoinUs = () => {
   return (
+    <>
+    <Helmet>
+      <title>MediMart | Join Us</title>
+    </Helmet>
     <div className="min-h-[calc(100vh-288px)] flex items-center justify-center">
       <div className="bg-base-100 md:min-w-[476px] rounded-lg shadow-xl my-10 border">
         {/* Links  */}
@@ -34,6 +39,7 @@ const JoinUs = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

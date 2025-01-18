@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
-  const { signInUser , handleGoogle} = useAuth();
+  const { signInUser , handleGoogle, handleFacebook} = useAuth();
   const {
     register,
     handleSubmit,
@@ -31,6 +31,15 @@ const SignIn = () => {
   const handleGoogleSignIn = async () => {
     try {
       await handleGoogle();
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  // handle facebook SignIn 
+  const handleFacebookSignIn = async () => {
+    try {
+      await handleFacebook();
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -108,7 +117,7 @@ const SignIn = () => {
           <FaGoogle className="mr-2" />
           Google
         </button>
-        <button className="flex items-center px-4 py-2 border rounded-lg">
+        <button onClick={handleFacebookSignIn} className="flex items-center px-4 py-2 border rounded-lg">
           <FaFacebook className="mr-2" />
           Facebook
         </button>

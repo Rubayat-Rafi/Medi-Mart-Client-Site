@@ -4,6 +4,11 @@ import Home from "../Pages/Home";
 import JoinUs from "../Pages/JoinUs";
 import SignIn from "../Components/SignIn";
 import SignUp from "../Components/SignUp";
+import Dashboard from "../Pages/Dashboard/Dashboard";
+import HomeDash from "../Pages/Dashboard/DashBoard Page/HomeDash";
+import ManageProducts from "../Pages/Dashboard/DashBoard Page/ManageProducts";
+import BannerAdvertise from "../Pages/Dashboard/DashBoard Page/BannerAdvertise";
+import Users from "../Pages/Dashboard/DashBoard Page/Users";
 
 export const router = createBrowserRouter([
     {
@@ -28,6 +33,29 @@ export const router = createBrowserRouter([
                     },
                 ]
             },
+
+            {
+                path: '/dashboard',
+                element:<Dashboard/>,
+                children : [
+                    {
+                        index: true,
+                        element: <HomeDash/>
+                    },
+                    {
+                        path: 'products',
+                        element: <ManageProducts/>
+                    },
+                    {
+                        path: 'advertise',
+                        element: <BannerAdvertise/>
+                    },
+                    {
+                        path: 'users',
+                        element: <Users/>
+                    },
+                ]
+            }
         ]
     },
 ])
