@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hook/useAxiosSecure";
 import useAuth from "../../../hook/useAuth";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
+import { FaEye } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 
 const ManageMedicines = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,11 +26,9 @@ const ManageMedicines = () => {
     },
   });
 
-  console.log(medicines);
+  refetch();
   if (isLoading) return <div>Loading medicines...</div>;
   if (!medicines.length) return <div>No medicines found.</div>;
-
-  refetch();
 
   const handleViewClick = (medicine) => {
     console.log(medicine);
@@ -39,6 +39,18 @@ const ManageMedicines = () => {
   // Calculate discounted price
   const calculateDiscountedPrice = (price, discount) => {
     return price - price * (discount / 100);
+  };
+
+  // delete medicine
+  const handleDeleteMedicine = async (id) => {
+    console.log(id);
+    try {
+      await axiosSecure.delete(`/delete/${id}`);
+      // Refetch the data after deletion
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -74,11 +86,19 @@ const ManageMedicines = () => {
                 <td>{medicine.company}</td>
                 <td>{medicine.genericName}</td>
                 <td>{medicine.price}</td>
-                <td className="flex items-center gap-4">
-                  <button onClick={() => handleViewClick(medicine)}>
-                    View
+                <td className="flex items-center gap-2  justify-between">
+                  <button
+                    className="text-lg hover:scale-105 transition text-primaryTextColor"
+                    onClick={() => handleViewClick(medicine)}
+                  >
+                    <FaEye />
                   </button>
-                  <button>Delete</button>
+                  <button
+                    className="text-xl hover:scale-105 transition text-red-500"
+                    onClick={() => handleDeleteMedicine(medicine._id)}
+                  >
+                    <MdDeleteForever />
+                  </button>
                 </td>
               </tr>
             ))}
@@ -110,7 +130,6 @@ const ManageMedicines = () => {
               <div>
                 <p className="mb-2">{selectedMedicine.company}</p>
                 <div className="flex items-center gap-6">
-                  
                   <p className="flex items-center font-semibold text-lg gap-1 ">
                     <FaBangladeshiTakaSign />
                     {calculateDiscountedPrice(
@@ -122,13 +141,13 @@ const ManageMedicines = () => {
                     <FaBangladeshiTakaSign /> {selectedMedicine.price}.00
                   </p>
                 </div>
+                <p className="text-xs mt-2">{selectedMedicine.description}</p>
               </div>
             </div>
             <div className="modal-action">
               <form method="dialog">
-                <button className="btn" onClick={() => setIsModalOpen(false)}>
-                  Close
-                </button>
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn">Close</button>
               </form>
             </div>
           </div>
