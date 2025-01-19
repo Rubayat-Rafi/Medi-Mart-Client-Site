@@ -10,6 +10,7 @@ import ManageProducts from "../Pages/Dashboard/DashBoard Page/ManageProducts";
 import BannerAdvertise from "../Pages/Dashboard/DashBoard Page/BannerAdvertise";
 import Users from "../Pages/Dashboard/DashBoard Page/Users";
 import CategoryProducts from "../Pages/CategoryProducts";
+import ManageMedicines from "../Pages/Dashboard/DashBoard Page/ManageMedicines";
 
 export const router = createBrowserRouter([
     {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
                     {
                         index: true,
                         element: <HomeDash/>
+                    },
+                    {
+                        path: 'manage-medicines',
+                        element: <ManageMedicines/>
                     },
                     {
                         path: 'products',

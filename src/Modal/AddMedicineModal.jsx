@@ -1,0 +1,162 @@
+import { useForm } from "react-hook-form";
+import useAxiosSecure from "../hook/useAxiosSecure";
+import { imageUpload } from "../utilities/utils";
+import PropTypes from 'prop-types';
+import toast from "react-hot-toast";
+
+const AddMedicineModal = ({ onClose }) => {
+  const { register, handleSubmit } = useForm();
+  const axiosSecure = useAxiosSecure();
+
+
+  const onSubmit = async (data) => {
+    const image = data.image[0];
+    // sent image data to imgbb with imageUpload hook
+    const photoURL = await imageUpload(image);
+
+    const {
+      category,
+      company,
+      description,
+      discount,
+      genericName,
+      itemName,
+      mass,
+      massUnit,
+      price,
+    } = data;
+
+    const medicineData = {
+      category,
+      company,
+      description,
+      discount: discount || 0, 
+      genericName,
+      itemName,
+      mass: `${mass} ${massUnit}`, 
+      price,
+      image: photoURL, 
+    };
+
+    try{
+    const response =  await axiosSecure.post(`/medicine`, medicineData)
+    console.log(response)
+        toast.success('Medicine Added Successfully!')
+    }catch(error){
+        toast.error(`An ${error} Happend.`)
+    }finally{
+        onClose()
+    }
+
+
+
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-10 flex items-center justify-center">
+      <div className="bg-white p-4 md:p-6 rounded shadow-lg w-11/12 max-w-[700px]">
+        <h2 className="text-lg font-bold mb-4">Add Medicine</h2>
+        <form
+          className="flex flex-col w-full text-xs md:text-sm space-y-2 md:space-y-3"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className="flex items-center gap-2">
+            <input
+              {...register("itemName", { required: true })}
+              placeholder="Item Name"
+              className="w-full px-4 py-2 text-gray-700 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+            />
+            <input
+              {...register("genericName", { required: true })}
+              placeholder="Generic Name"
+              className="w-full px-4 py-2 text-gray-700 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+            />
+          </div>
+          <div className="w-full flex items-center gap-2">
+            <input
+              {...register("image", { required: true })}
+              type="file"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+            />
+            <select
+              {...register("category", { required: true })}
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+            >
+              <option value="">Select Category</option>
+              <option value="OTC-Medicine">OTC Medicine</option>
+              <option value="Women's-Choice">Women&apos;s Choice</option>
+              <option value="Sexual-Wellness">Sexual Wellness</option>
+              <option value="Diabetic-Care">Diabetic Care</option>
+              <option value="Baby-Care">Baby Care</option>
+              <option value="Injection">Injection</option>
+            </select>
+          </div>
+          <div className="w-full flex items-center gap-2">
+            <select
+              {...register("company", { required: true })}
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+            >
+              <option value="Healthcare Pharmaceuticals Ltd">
+                Healthcare Pharmaceuticals Ltd
+              </option>
+              <option value="Renata Limited">Renata Limited</option>
+              <option value="Square Pharmaceuticals PLC">
+                Square Pharmaceuticals PLC
+              </option>
+            </select>
+            <input
+              {...register("mass", { required: true })}
+              type="number"
+              placeholder="20"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+            />
+            <select
+              {...register("massUnit", { required: true })}
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+            >
+              <option value="Mg">Mg</option>
+              <option value="ML">ML</option>
+            </select>
+          </div>
+          <div className="w-full flex items-center gap-2">
+            <input
+              {...register("price", { required: true })}
+              type="number"
+              placeholder="Price"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+            />
+            <input
+              {...register("discount")}
+              type="number"
+              placeholder="Discount (%)"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+            />
+          </div>
+          <textarea
+            {...register("description", { required: true })}
+            placeholder="Short Description"
+            className="w-full px-4 py-2 text-gray-700 border resize-none rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+          />
+          <div className="mt-4">
+            <button
+              type="submit"
+              className="bg-mainColor hover:bg-secondBgColor text-white px-4 py-2 rounded"
+            >
+              Add
+            </button>
+            <button onClick={onClose} className="ml-2">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+AddMedicineModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
+
+
+export default AddMedicineModal;

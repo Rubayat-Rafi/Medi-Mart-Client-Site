@@ -33,6 +33,12 @@ const Category = () => {
       medicineCount: 50,
       category: "baby-care",
     },
+    {
+      name: "Injection",
+      image: "https://img.icons8.com/?size=100&id=xw4jzVybHk9z&format=png&color=000000",
+      medicineCount: 50,
+      category: "injection",
+    },
   ];
 
   return (

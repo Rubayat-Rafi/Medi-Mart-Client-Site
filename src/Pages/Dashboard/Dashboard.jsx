@@ -10,6 +10,7 @@ import { RiAdvertisementFill } from "react-icons/ri";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../../hook/useAuth";
 import { Helmet } from "react-helmet-async";
+import { AiFillMedicineBox } from "react-icons/ai";
 
 const Dashboard = () => {
   const { logOut } = useAuth();
@@ -26,11 +27,11 @@ const Dashboard = () => {
   };
 
   return (
-    <>
+    <div className="mx-auto w-11/12 max-w-[1440px] ">
     <Helmet>
         <title>Dashboard | Home</title>
     </Helmet>
-    <div className="min-h-[calc(100vh-288px)] flex bg-gray-100">
+    <div className="flex ">
       {/* Sidebar Toggle Button */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -44,12 +45,12 @@ const Dashboard = () => {
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform md:relative md:translate-x-0 `}
       >
-        <div className="p-5 text-center text-2xl font-bold">
+        <div className="p-5 text-center text-xl font-bold">
           <h1>Dashboard</h1>
         </div>
 
         {/* Menu Items */}
-        <nav className="flex flex-col space-y-4 p-5">
+        <nav className="flex flex-col text-sm space-y-4 p-5">
             {/* home  */}
             <NavLink
               to="/dashboard"
@@ -61,6 +62,17 @@ const Dashboard = () => {
               }
             >
               <FaHome className="mr-3" /> Home
+            </NavLink>
+            {/* Manage Medicines */}
+            <NavLink
+              to="/dashboard/manage-medicines"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded hover:bg-gray-700 ${
+                  isActive ? "bg-gray-700" : ""
+                }`
+              }
+            >
+              <AiFillMedicineBox className="mr-3" /> Manage Medicines
             </NavLink>
             {/* Manage Products */}
             <NavLink
@@ -127,7 +139,7 @@ const Dashboard = () => {
         <Outlet />
       </main>
     </div>
-    </>
+    </div>
   );
 };
 

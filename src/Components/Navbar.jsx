@@ -25,11 +25,11 @@ const Navbar = () => {
   );
 
   const handleLogOut = async () => {
-    try{
+    try {
       await logOut();
       navigate("/");
-    }catch(error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -37,14 +37,14 @@ const Navbar = () => {
     <div className="bg-base-100 shadow-lg">
       <nav className="navbar mx-auto max-w-[1440px]">
         <div className="flex-1">
-          <Link to='/'>
-          <a className=" text-xl font-bold text-primaryTextColor">MediMart</a>
+          <Link to="/">
+            <a className=" text-xl font-bold text-primaryTextColor">MediMart</a>
           </Link>
         </div>
         <div className="flex-none">
-          {
-            user === null && <ul className="menu menu-horizontal px-1">{links}</ul>
-          }
+          {user === null && (
+            <ul className="menu menu-horizontal px-1">{links}</ul>
+          )}
           <Menu>
             <MenuButton className="inline-flex items-center gap-2 rounded-md bg-mainColor py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-secondBgColor data-[open]:bg-secondBgColor data-[focus]:outline-1 data-[focus]:outline-white">
               Lan
@@ -103,7 +103,7 @@ const Navbar = () => {
                   className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-36 shadow"
                 >
                   <div className="card-body">
-                    <span className="text-lg font-bold">8 Items</span>
+                    <span className="text-lg font-bold">0 Items</span>
                     <span className="text-info">Subtotal: $999</span>
                     <div className="card-actions">
                       <button className="py-1 w-full text-center text-white rounded-lg bg-mainColor ">
