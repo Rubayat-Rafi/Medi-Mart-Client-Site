@@ -1,13 +1,16 @@
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../hook/useAxiosSecure";
 import { imageUpload } from "../utilities/utils";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import toast from "react-hot-toast";
+import useAuth from "../hook/useAuth";
 
 const AddMedicineModal = ({ onClose }) => {
+
   const { register, handleSubmit } = useForm();
   const axiosSecure = useAxiosSecure();
-
+  const { user } = useAuth();
+  console.log(user);
 
   const onSubmit = async (data) => {
     const image = data.image[0];
@@ -30,26 +33,27 @@ const AddMedicineModal = ({ onClose }) => {
       category,
       company,
       description,
-      discount: discount || 0, 
+      discount: parseFloat(discount || 0),
       genericName,
       itemName,
-      mass: `${mass} ${massUnit}`, 
-      price,
-      image: photoURL, 
+      mass: `${mass} ${massUnit}`,
+      price: parseFloat(price),
+      image: photoURL,
+      seller: {
+        name: user?.displayName,
+        email: user?.email,
+      },
     };
 
-    try{
-    const response =  await axiosSecure.post(`/medicine`, medicineData)
-    console.log(response)
-        toast.success('Medicine Added Successfully!')
-    }catch(error){
-        toast.error(`An ${error} Happend.`)
-    }finally{
-        onClose()
+    try {
+      const response = await axiosSecure.post(`/medicine`, medicineData);
+      console.log(response);
+      toast.success("Medicine Added Successfully!");
+    } catch (error) {
+      toast.error(`An ${error} Happend.`);
+    } finally {
+      onClose();
     }
-
-
-
   };
 
   return (
@@ -104,19 +108,23 @@ const AddMedicineModal = ({ onClose }) => {
                 Square Pharmaceuticals PLC
               </option>
             </select>
-            <input
-              {...register("mass", { required: true })}
-              type="number"
-              placeholder="20"
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
-            />
-            <select
-              {...register("massUnit", { required: true })}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
-            >
-              <option value="Mg">Mg</option>
-              <option value="ML">ML</option>
-            </select>
+            <div className="w-full flex items-center gap-2">
+              <input
+                {...register("mass")}
+                type="number"
+                placeholder="20"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+              />
+              <select
+                {...register("massUnit")}
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+              >
+                <option value="Mg">Mg</option>
+                <option value="ML">ML</option>
+                <option value="Pads">Pads</option>
+                <option value="Packet">Pack</option>
+              </select>
+            </div>
           </div>
           <div className="w-full flex items-center gap-2">
             <input
@@ -157,6 +165,5 @@ const AddMedicineModal = ({ onClose }) => {
 AddMedicineModal.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
-
 
 export default AddMedicineModal;

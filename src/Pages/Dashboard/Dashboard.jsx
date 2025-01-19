@@ -12,6 +12,8 @@ import useAuth from "../../hook/useAuth";
 import { Helmet } from "react-helmet-async";
 import { AiFillMedicineBox } from "react-icons/ai";
 
+
+
 const Dashboard = () => {
   const { logOut } = useAuth();
   const navigate = useNavigate();
@@ -41,7 +43,7 @@ const Dashboard = () => {
       </button>
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 w-64 bg-gray-800 text-white transform ${
+        className={`fixed inset-y-0 left-0 w-64 bg-gray-800  text-white transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform md:relative md:translate-x-0 `}
       >

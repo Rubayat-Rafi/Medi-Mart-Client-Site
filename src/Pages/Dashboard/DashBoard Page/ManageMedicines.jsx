@@ -1,35 +1,48 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddMedicineModal from "../../../modal/AddMedicineModal";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../hook/useAxiosSecure";
+import useAuth from "../../../hook/useAuth";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const ManageMedicines = () => {
-  const [medicines, setMedicines] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMedicine, setSelectedMedicine] = useState(null);
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/medicines", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`, // Include token if needed
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setMedicines(data));
-  }, []);
+  const {
+    data: medicines = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["medicines", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const { data } = await axiosSecure.get(`/medicines/${user?.email}`);
+      return data;
+    },
+  });
 
-  const handleAddMedicine = (medicine) => {
-    fetch("http://localhost:5000/api/medicines", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(medicine),
-    })
-      .then((response) => response.json())
-      .then((newMedicine) => setMedicines([...medicines, newMedicine]));
+  console.log(medicines);
+  if (isLoading) return <div>Loading medicines...</div>;
+  if (!medicines.length) return <div>No medicines found.</div>;
+
+  refetch();
+
+  const handleViewClick = (medicine) => {
+    console.log(medicine);
+    setSelectedMedicine(medicine);
+    document.getElementById("my_modal_5").showModal();
+  };
+
+  // Calculate discounted price
+  const calculateDiscountedPrice = (price, discount) => {
+    return price - price * (discount / 100);
   };
 
   return (
-    <div>
+    <>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold">Manage Medicines</h2>
         <button
@@ -39,38 +52,89 @@ const ManageMedicines = () => {
           Add Medicine
         </button>
       </div>
-      <table className="w-full mt-4 border">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Company</th>
-            <th>Price</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {medicines.map((medicine) => (
-            <tr key={medicine._id}>
-              <td>{medicine.itemName}</td>
-              <td>{medicine.category}</td>
-              <td>{medicine.company}</td>
-              <td>${medicine.price}</td>
-              <td>
-                <button className="text-red-500">Delete</button>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="table">
+          {/* head */}
+          <thead>
+            <tr>
+              <th></th>
+              <th>Medicine Name</th>
+              <th>Company</th>
+              <th>Generic Name</th>
+              <th>Price</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {/* row 1 */}
+            {medicines.map((medicine, index) => (
+              <tr key={medicine._id}>
+                <th>{index + 1}</th>
+                <td>{medicine.itemName}</td>
+                <td>{medicine.company}</td>
+                <td>{medicine.genericName}</td>
+                <td>{medicine.price}</td>
+                <td className="flex items-center gap-4">
+                  <button onClick={() => handleViewClick(medicine)}>
+                    View
+                  </button>
+                  <button>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {isModalOpen && (
-        <AddMedicineModal
-          onClose={() => setIsModalOpen(false)}
-          onAddMedicine={handleAddMedicine}
-        />
+        <AddMedicineModal onClose={() => setIsModalOpen(false)} />
       )}
-    </div>
+
+      {/* Modal for viewing specific medicine */}
+      {selectedMedicine && (
+        <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+          <div className="modal-box">
+            <div className="w-full h-full object-cover">
+              <img className="rounded-lg" src={selectedMedicine.image} />
+            </div>
+            <div className="space-y-2 mt-3">
+              <div className="flex  items-end gap-2">
+                <h3 className="font-bold text-xl">
+                  {selectedMedicine.itemName}
+                </h3>
+                <p className="text-[12px]">{selectedMedicine.mass}</p>
+              </div>
+              <p className="text-green-500 font-semibold">
+                {selectedMedicine.genericName}
+              </p>
+              <div>
+                <p className="mb-2">{selectedMedicine.company}</p>
+                <div className="flex items-center gap-6">
+                  
+                  <p className="flex items-center font-semibold text-lg gap-1 ">
+                    <FaBangladeshiTakaSign />
+                    {calculateDiscountedPrice(
+                      selectedMedicine.price,
+                      selectedMedicine.discount
+                    )}
+                  </p>
+                  <p className="flex items-center line-through text-red-500 text-sm gap-1 ">
+                    <FaBangladeshiTakaSign /> {selectedMedicine.price}.00
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="modal-action">
+              <form method="dialog">
+                <button className="btn" onClick={() => setIsModalOpen(false)}>
+                  Close
+                </button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+      )}
+    </>
   );
 };
 

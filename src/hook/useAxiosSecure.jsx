@@ -1,41 +1,47 @@
-import axios from 'axios';
-import {useNavigate} from 'react-router-dom'
-import useAuth from './useAuth';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import useAuth from "./useAuth";
 
 const axiosSecure = axios.create({
-    baseURL: 'http://localhost:9000'
-})
-
+  baseURL: "http://localhost:9000",
+});
 
 const useAxiosSecure = () => {
-   const navigate = useNavigate();
-   const {logOut} = useAuth()
+  const navigate = useNavigate();
+  const { logOut } = useAuth();
 
-    axiosSecure.interceptors.request.use(function (config) {
-
-        const token = localStorage.getItem('access-token')
+  axiosSecure.interceptors.request.use(
+    function (config) {
+      const token = localStorage.getItem("access-token");
+      if (token) {
         config.headers.authorization = `Bearer ${token}`;
-        return config;
+      }
+      return config;
+    },
+    function (error) {
+      // Handle request error
+      console.error("Request Error:", error);
+      return Promise.reject(error);
+    }
+  );
 
-    }, function (error){
-        return Promise.reject(error);
-    });
+  // interceptors 401 and 403 status
+  axiosSecure.interceptors.response.use(
+    function (response) {
+      return response;
+    },
+    async function (error) {
+      const status = error.response.status;
+      if (status === 401 || status === 403) {
+        await logOut();
+        navigate("/join-us");
+      }
 
-    // interceptors 401 and 403 status
-    axiosSecure.interceptors.response.use(function(response){
-        return response;
-    },async function (error){
+      return Promise.reject(error);
+    }
+  );
 
-        const status = error.response.status;
-        if(status === 401 || status === 403){
-            await logOut()
-            navigate('/join-us')
-        }
-
-        return Promise.reject(error)
-    })
-
-    return axiosSecure;
+  return axiosSecure;
 };
 
 export default useAxiosSecure;
