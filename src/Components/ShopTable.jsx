@@ -2,7 +2,7 @@ import { FaEye } from "react-icons/fa6";
 import PropTypes from 'prop-types';
 
 
-const ShopTable = ({ medicines, handleViewClick }) => {
+const ShopTable = ({ medicines, handleViewClick, calculateDiscountedPrice}) => {
   return (
     <div className="overflow-x-auto">
       <table className="table">
@@ -25,7 +25,7 @@ const ShopTable = ({ medicines, handleViewClick }) => {
               <td>{medicine.itemName}</td>
               <td>{medicine.company}</td>
               <td>{medicine.genericName}</td>
-              <td>{medicine.price}</td>
+              <td>{calculateDiscountedPrice(medicine.price, medicine.discount)}</td>
               <td className="flex items-center gap-2  justify-between">
                 <button
                   className="text-lg hover:scale-105 transition text-primaryTextColor"
@@ -45,6 +45,7 @@ const ShopTable = ({ medicines, handleViewClick }) => {
       </table>
     </div>
   );
+
 };
 
 
@@ -60,6 +61,7 @@ ShopTable.propTypes = {
     })
   ).isRequired,
   handleViewClick: PropTypes.func.isRequired,
+  calculateDiscountedPrice: PropTypes.func.isRequired,
 };
 
 export default ShopTable;

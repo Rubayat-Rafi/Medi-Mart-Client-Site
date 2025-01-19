@@ -85,7 +85,7 @@ const ManageMedicines = () => {
                 <td>{medicine.itemName}</td>
                 <td>{medicine.company}</td>
                 <td>{medicine.genericName}</td>
-                <td>{medicine.price}</td>
+                <td>{calculateDiscountedPrice(medicine.price, medicine.discount)}</td>
                 <td className="flex items-center gap-2  justify-between">
                   <button
                     className="text-lg hover:scale-105 transition text-primaryTextColor"

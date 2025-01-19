@@ -1,37 +1,40 @@
 import { FaSearch } from "react-icons/fa";
 import ShopTable from "../Components/ShopTable";
-import {  useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../hook/useAxiosPublic";
 import { useState } from "react";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const Shop = () => {
-    const axiosPublic = useAxiosPublic();
-    const [selectedMedicine, setSelectedMedicine] = useState(null);
+  const axiosPublic = useAxiosPublic();
+  const [selectedMedicine, setSelectedMedicine] = useState(null);
 
-    const {data: medicines=[],isLoading, refetch}= useQuery({
-       queryKey: ['medicine'],
-       queryFn: async() => {
-        const {data} = await axiosPublic.get('/shop-medicine')
-        return data
-       }
-    })
+  const {
+    data: medicines = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["medicine"],
+    queryFn: async () => {
+      const { data } = await axiosPublic.get("/shop-medicine");
+      return data;
+    },
+  });
 
-    refetch()
-    if (isLoading) return <div>Loading medicines...</div>;
-    if (!medicines.length) return <div>No medicines found.</div>;
+  refetch();
+  if (isLoading) return <div>Loading medicines...</div>;
+  if (!medicines.length) return <div>No medicines found.</div>;
 
-    const handleViewClick = (medicine) => {
-      console.log(medicine);
-      setSelectedMedicine(medicine);
-      document.getElementById("my_modal_5").showModal();
-    };
+  const handleViewClick = (medicine) => {
+    console.log(medicine);
+    setSelectedMedicine(medicine);
+    document.getElementById("my_modal_5").showModal();
+  };
 
-      // Calculate discounted price
+  // Calculate discounted price
   const calculateDiscountedPrice = (price, discount) => {
     return price - price * (discount / 100);
   };
-
 
   return (
     <div className="mx-auto max-w-[1440px] w-11/12">
@@ -66,11 +69,10 @@ const Shop = () => {
       </div>
       {/* shop table  */}
       <div className="border rounded-lg mb-10">
-        <ShopTable handleViewClick={handleViewClick} medicines={medicines} />
+        <ShopTable calculateDiscountedPrice={calculateDiscountedPrice} handleViewClick={handleViewClick} medicines={medicines} />
       </div>
 
-
-{/* Modal for viewing specific medicine */}
+      {/* Modal for viewing specific medicine */}
       {selectedMedicine && (
         <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
           <div className="modal-box">
@@ -90,7 +92,6 @@ const Shop = () => {
               <div>
                 <p className="mb-2">{selectedMedicine.company}</p>
                 <div className="flex items-center gap-6">
-                  
                   <p className="flex items-center font-semibold text-lg gap-1 ">
                     <FaBangladeshiTakaSign />
                     {calculateDiscountedPrice(
@@ -107,15 +108,13 @@ const Shop = () => {
             </div>
             <div className="modal-action">
               <form method="dialog">
-                <button className="btn" onClick={() => setIsModalOpen(false)}>
-                  Close
-                </button>
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn">Close</button>
               </form>
             </div>
           </div>
         </dialog>
       )}
-
     </div>
   );
 };

@@ -12,6 +12,7 @@ import Users from "../Pages/Dashboard/DashBoard Page/Users";
 import CategoryProducts from "../Pages/CategoryProducts";
 import ManageMedicines from "../Pages/Dashboard/DashBoard Page/ManageMedicines";
 import Shop from "../Pages/Shop";
+import PrivetRoute from "./PrivetRoute";
 
 export const router = createBrowserRouter([
     {
@@ -50,7 +51,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element:<Dashboard/>,
+        element: <PrivetRoute><Dashboard/></PrivetRoute>,
         children : [
             {
                 index: true,
@@ -58,19 +59,19 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'manage-medicines',
-                element: <ManageMedicines/>
+                element: <PrivetRoute><ManageMedicines/></PrivetRoute>
             },
             {
                 path: 'products',
-                element: <ManageProducts/>
+                element: <PrivetRoute><ManageProducts/></PrivetRoute>
             },
             {
                 path: 'advertise',
-                element: <BannerAdvertise/>
+                element: <PrivetRoute><BannerAdvertise/></PrivetRoute>
             },
             {
                 path: 'users',
-                element: <Users/>
+                element: <PrivetRoute><Users/></PrivetRoute>
             },
         ]
     }
