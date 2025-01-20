@@ -2,6 +2,7 @@ import { FaGoogle, FaFacebook } from "react-icons/fa";
 import useAuth from "../hook/useAuth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { saveUser } from "../utilities/utils";
 
 const SignIn = () => {
   const { signInUser , handleGoogle, handleFacebook} = useAuth();
@@ -30,7 +31,8 @@ const SignIn = () => {
   // handle Google SignIn 
   const handleGoogleSignIn = async () => {
     try {
-      await handleGoogle();
+    const data =  await handleGoogle();
+    await saveUser(data?.user)
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -39,7 +41,8 @@ const SignIn = () => {
   // handle facebook SignIn 
   const handleFacebookSignIn = async () => {
     try {
-      await handleFacebook();
+      const data =  await handleFacebook();
+      await saveUser(data?.user)
       navigate("/");
     } catch (err) {
       console.log(err);

@@ -106,9 +106,9 @@ const Navbar = () => {
                     <span className="text-lg font-bold">0 Items</span>
                     <span className="text-info">Subtotal: $999</span>
                     <div className="card-actions">
-                      <button className="py-1 w-full text-center text-white rounded-lg bg-mainColor ">
+                      <Link to='/dashboard/cart-page' className="py-1 w-full text-center text-white rounded-lg bg-mainColor ">
                         View cart
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

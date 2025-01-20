@@ -8,6 +8,7 @@ import useAuth from "../hook/useAuth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../hook/useAxiosSecure";
+import LoadingSpinner from "../Components/LoadingSpinner";
 
 const Shop = () => {
   const axiosPublic = useAxiosPublic();
@@ -28,9 +29,11 @@ const Shop = () => {
     },
   });
 
+  console.log(medicines)
+
 
   refetch();
-  if (isLoading) return <div>Loading medicines...</div>;
+  if (isLoading) return <LoadingSpinner/>;
   if (!medicines.length) return <div>No medicines found.</div>;
 
   const handleViewClick = (medicine) => {
@@ -45,6 +48,8 @@ const Shop = () => {
 
   // ar to cart option
   const handleSelectCart = async (medicine) => {
+
+
     const discountPrice = calculateDiscountedPrice(
       medicine?.price,
       medicine?.discount
@@ -53,8 +58,9 @@ const Shop = () => {
       name: medicine.itemName,
       image: medicine.image,
       price: discountPrice,
-      quentity: medicine.quantity,
+      quantity: medicine.quantity,
       buyerEmail: user?.email,
+      count: medicine?.counter
     };
 
     try {
@@ -63,6 +69,21 @@ const Shop = () => {
         console.log(result);
         navigate("/dashboard/cart-page");
         toast.success("Product added in the cart.");
+        // if(){
+
+        //   const {
+        //     data: carts = [],
+        //     isLoading,
+        //     refetch,
+        //   } = useQuery({
+        //     queryKey: ["carts", user?.email],
+        //     queryFn: async () => {
+        //       const { data } = await axiosSecure.get(`/carts/${user?.email}`);
+        //       return data;
+        //     },
+        //   });
+        // }
+
       } else {
         navigate("/join-us/signup", {
           state: { from: window.location.pathname },

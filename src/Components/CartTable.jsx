@@ -1,5 +1,54 @@
-const CartTable = ({ cart }) => {
-  console.log(cart);
+import PropTypes from "prop-types";
+import { MdDeleteForever } from "react-icons/md";
+import useAxiosSecure from "../hook/useAxiosSecure";
+import toast from "react-hot-toast";
+import useAxiosPublic from "../hook/useAxiosPublic";
+
+const CartTable = ({ carts = [], handleCartDelete, refetch }) => {
+  const axiosPublic = useAxiosPublic();
+
+
+  
+
+  const handleIncrement = async (id, price, quantity) => {
+
+    if(quantity <= 0){
+        return toast.error('nafiz vaiii');
+    }
+    try {
+      const res = await axiosPublic.patch(`/update-count/${id}`, {
+        count: "increase",
+        price,
+        quantity,
+      });
+      if (res.status === 200) {
+        refetch();
+      }
+    } catch (err) {
+      toast.error(err.res.data.message);
+    }
+  };
+  const handleDecrement = async (id, price, quantity, count) => {
+    console.log(price);
+
+    if(count <= 0  ){
+        return toast.error('Abdullah  vaiii');
+    }
+   
+    try {
+      const res = await axiosPublic.patch(`/update-count/${id}`, {
+        count: "decrement",
+        price,
+        quantity,
+      });
+      if (res.status === 200) {
+        refetch();
+      }
+    } catch (err) {
+      toast.error(err.res.data.message);
+    }
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="table">
@@ -7,26 +56,67 @@ const CartTable = ({ cart }) => {
         <thead>
           <tr>
             <th></th>
+            <th>Medicine Image</th>
             <th>Medicine Name</th>
-            <th>Company</th>
-            <th>Generic Name</th>
             <th>Price</th>
+            <th>Quantity</th>
+            <th>Count</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {/* row 1 */}
-          {/* row 1 */}
-          <tr>
-            <th>1</th>
-            <td>Cy Ganderton</td>
-            <td>Quality Control Specialist</td>
-            <td>Blue</td>
-          </tr>
+          {carts.map((cart, idx) => (
+            <tr key={cart._id}>
+              <th>{idx + 1}</th>
+              <td>
+                <img
+                  className="w-16 h-16 rounded-lg object-cover"
+                  src={cart.image}
+                />
+              </td>
+              <td>{cart.name}</td>
+              <td>{cart.price} Taka</td>
+              <td>{cart?.quantity}</td>
+              <td>
+                <button
+                  onClick={() =>
+                    handleIncrement(cart?._id, cart?.price, cart?.quantity)
+                  }
+                >
+                  +
+                </button>
+                <span>{cart.count}</span>
+                <button
+                  onClick={() =>
+                    handleDecrement(cart?._id, cart?.price, cart?.quantity, cart?.count)
+                  }
+                >
+                  -
+                </button>
+              </td>
+              <td>
+                <button
+                  onClick={() => handleCartDelete(cart._id)}
+                  className="text-xl hover:scale-105 transition text-red-500"
+                >
+                  <MdDeleteForever />
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
   );
+};
+CartTable.propTypes = {
+  carts: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  handleCartDelete: PropTypes.func.isRequired,
 };
 
 export default CartTable;

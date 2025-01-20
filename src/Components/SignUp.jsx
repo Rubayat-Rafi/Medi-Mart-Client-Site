@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import useAuth from "../hook/useAuth";
-import { imageUpload } from "../utilities/utils";
+import { imageUpload , saveUser} from "../utilities/utils";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
@@ -11,14 +11,12 @@ const SignUp = () => {
   const location = useLocation();
   const from = location.state?.from || '/';
 
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  console.log(location)
 
 
   const handleSignUpForm = async (data) => {
@@ -27,15 +25,20 @@ const SignUp = () => {
     const email = data.email;
     const username = data.username;
     const password = data.password;
+    const role = data.role || 'user';
     const image = data.photo[0];
 
     // sent image data to imgbb with imageUpload hook
     const photoURL = await imageUpload(image);
-    console.log(photoURL);
+   
 
     try {
       const result = await createUser(email, password);
       await updateUser(username, photoURL);
+
+      // save user info in db if the user is new
+      await saveUser({ ...result?.user, displayName: username, photoURL }, role)
+
       setUser(result);
       navigate(from, { replace: true });
     } catch (error) {
@@ -46,7 +49,8 @@ const SignUp = () => {
   //handle google signUp
   const handleGoogleSignUp = async () => {
     try {
-      await handleGoogle();
+      const data =  await handleGoogle();
+      await saveUser(data?.user)
       navigate(from, { replace: true });
     } catch (err) {
       console.log(err);
@@ -56,7 +60,8 @@ const SignUp = () => {
   //handle facebook signUp
   const handleFacebookSignUp = async () => {
     try {
-      await handleFacebook();
+      const data = await handleFacebook();
+      await saveUser(data?.user)
       navigate(from, { replace: true });
     } catch (err) {
       console.log(err);

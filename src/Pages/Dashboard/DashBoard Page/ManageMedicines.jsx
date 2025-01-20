@@ -28,7 +28,7 @@ const ManageMedicines = () => {
 
   refetch();
   if (isLoading) return <div>Loading medicines...</div>;
-  if (!medicines.length) return <div>No medicines found.</div>;
+  // if (!medicines.length) return <div>No medicines found.</div>;
 
   const handleViewClick = (medicine) => {
     console.log(medicine);

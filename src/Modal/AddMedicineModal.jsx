@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import useAuth from "../hook/useAuth";
 
 const AddMedicineModal = ({ onClose }) => {
-
   const { register, handleSubmit } = useForm();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
@@ -30,8 +29,6 @@ const AddMedicineModal = ({ onClose }) => {
       quantity,
     } = data;
 
-
-
     const medicineData = {
       category,
       company,
@@ -43,6 +40,7 @@ const AddMedicineModal = ({ onClose }) => {
       price: parseFloat(price),
       image: photoURL,
       quantity: parseFloat(quantity),
+      counter: 0,
       seller: {
         name: user?.displayName,
         email: user?.email,
@@ -139,19 +137,19 @@ const AddMedicineModal = ({ onClose }) => {
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
             />
             <div className="flex w-full gap-2">
-            <input
-              {...register("discount")}
-              type="number"
-              placeholder="Discount (%)"
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
-            />
+              <input
+                {...register("discount")}
+                type="number"
+                placeholder="Discount (%)"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+              />
 
-            <input
-              {...register("quantity",{ required: true })}
-              type="number"
-              placeholder="Quantity"
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
-            />
+              <input
+                {...register("quantity", { required: true })}
+                type="number"
+                placeholder="Quantity"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+              />
             </div>
           </div>
           <textarea
