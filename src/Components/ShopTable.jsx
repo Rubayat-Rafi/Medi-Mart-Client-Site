@@ -1,8 +1,10 @@
-import { FaEye } from "react-icons/fa6";
+import { FaCartArrowDown, FaEye } from "react-icons/fa6";
 import PropTypes from 'prop-types';
 
 
-const ShopTable = ({ medicines, handleViewClick, calculateDiscountedPrice}) => {
+const ShopTable = ({ medicines, handleViewClick, calculateDiscountedPrice, handleSelectCart}) => {
+
+
   return (
     <div className="overflow-x-auto">
       <table className="table">
@@ -25,7 +27,7 @@ const ShopTable = ({ medicines, handleViewClick, calculateDiscountedPrice}) => {
               <td>{medicine.itemName}</td>
               <td>{medicine.company}</td>
               <td>{medicine.genericName}</td>
-              <td>{calculateDiscountedPrice(medicine.price, medicine.discount)}</td>
+              <td>{calculateDiscountedPrice(medicine.price, medicine.discount)} Taka</td>
               <td className="flex items-center gap-2  justify-between">
                 <button
                   className="text-lg hover:scale-105 transition text-primaryTextColor"
@@ -34,9 +36,10 @@ const ShopTable = ({ medicines, handleViewClick, calculateDiscountedPrice}) => {
                   <FaEye />
                 </button>
                 <button
-                  className="text-base hover:scale-105 transition text-red-500"
+                onClick={()=> handleSelectCart(medicine)}
+                  className="text-lg hover:scale-105 transition text-red-500"
                 >
-                  Select
+                  <FaCartArrowDown  />
                 </button>
               </td>
             </tr>
@@ -60,6 +63,7 @@ ShopTable.propTypes = {
       price: PropTypes.number.isRequired,
     })
   ).isRequired,
+  handleSelectCart: PropTypes.func.isRequired,
   handleViewClick: PropTypes.func.isRequired,
   calculateDiscountedPrice: PropTypes.func.isRequired,
 };

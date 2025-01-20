@@ -11,6 +11,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../../hook/useAuth";
 import { Helmet } from "react-helmet-async";
 import { AiFillMedicineBox } from "react-icons/ai";
+import { FaCartArrowDown } from "react-icons/fa6";
 
 const Dashboard = () => {
   const { logOut } = useAuth();
@@ -75,6 +76,21 @@ const Dashboard = () => {
             >
               <AiFillMedicineBox className="mr-3" /> Manage Medicines
             </NavLink>
+
+            {/* Cart  page */}
+            <NavLink
+              to="/dashboard/cart-page"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded hover:bg-gray-700 ${
+                  isActive ? "bg-gray-700" : ""
+                }`
+              }
+            >
+              <FaCartArrowDown className="mr-3" /> Cart Page
+            </NavLink>
+
+
+
             {/* Manage Products */}
             <NavLink
               to="/dashboard/products"

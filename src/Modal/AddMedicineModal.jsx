@@ -27,7 +27,10 @@ const AddMedicineModal = ({ onClose }) => {
       mass,
       massUnit,
       price,
+      quantity,
     } = data;
+
+
 
     const medicineData = {
       category,
@@ -39,6 +42,7 @@ const AddMedicineModal = ({ onClose }) => {
       mass: `${mass} ${massUnit}`,
       price: parseFloat(price),
       image: photoURL,
+      quantity: parseFloat(quantity),
       seller: {
         name: user?.displayName,
         email: user?.email,
@@ -119,6 +123,7 @@ const AddMedicineModal = ({ onClose }) => {
                 {...register("massUnit")}
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
               >
+                <option value="">Select</option>
                 <option value="Mg">Mg</option>
                 <option value="ML">ML</option>
                 <option value="Pads">Pads</option>
@@ -133,12 +138,21 @@ const AddMedicineModal = ({ onClose }) => {
               placeholder="Price"
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
             />
+            <div className="flex w-full gap-2">
             <input
               {...register("discount")}
               type="number"
               placeholder="Discount (%)"
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
             />
+
+            <input
+              {...register("quantity",{ required: true })}
+              type="number"
+              placeholder="Quantity"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
+            />
+            </div>
           </div>
           <textarea
             {...register("description", { required: true })}

@@ -13,6 +13,7 @@ import CategoryProducts from "../Pages/CategoryProducts";
 import ManageMedicines from "../Pages/Dashboard/DashBoard Page/ManageMedicines";
 import Shop from "../Pages/Shop";
 import PrivetRoute from "./PrivetRoute";
+import CartPage from "../Pages/Dashboard/DashBoard Page/CartPage";
 
 export const router = createBrowserRouter([
     {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
             {
                 path: 'manage-medicines',
                 element: <PrivetRoute><ManageMedicines/></PrivetRoute>
+            },
+            {
+                path: 'cart-page',
+                element: <PrivetRoute><CartPage/></PrivetRoute>
             },
             {
                 path: 'products',

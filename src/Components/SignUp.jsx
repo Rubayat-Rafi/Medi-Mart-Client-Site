@@ -2,16 +2,24 @@ import { useForm } from "react-hook-form";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import useAuth from "../hook/useAuth";
 import { imageUpload } from "../utilities/utils";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-  const { createUser, setUser, updateUser, handleGoogle, handleFacebook} = useAuth();
+  const { createUser, setUser, updateUser, handleGoogle, handleFacebook } =
+    useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || '/';
+
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  console.log(location)
+
 
   const handleSignUpForm = async (data) => {
     // data.preventDefault()
@@ -29,7 +37,7 @@ const SignUp = () => {
       const result = await createUser(email, password);
       await updateUser(username, photoURL);
       setUser(result);
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (error) {
       console.log(error);
     }
@@ -39,7 +47,7 @@ const SignUp = () => {
   const handleGoogleSignUp = async () => {
     try {
       await handleGoogle();
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (err) {
       console.log(err);
     }
@@ -49,7 +57,7 @@ const SignUp = () => {
   const handleFacebookSignUp = async () => {
     try {
       await handleFacebook();
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (err) {
       console.log(err);
     }
@@ -176,7 +184,10 @@ const SignUp = () => {
           <FaGoogle className="mr-2" />
           Google
         </button>
-        <button onClick={handleFacebookSignUp} className="flex items-center px-4 py-2 border rounded-lg">
+        <button
+          onClick={handleFacebookSignUp}
+          className="flex items-center px-4 py-2 border rounded-lg"
+        >
           <FaFacebook className="mr-2" />
           Facebook
         </button>

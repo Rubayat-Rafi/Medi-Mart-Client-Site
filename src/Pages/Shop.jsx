@@ -4,10 +4,17 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../hook/useAxiosPublic";
 import { useState } from "react";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
+import useAuth from "../hook/useAuth";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import useAxiosSecure from "../hook/useAxiosSecure";
 
 const Shop = () => {
   const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure()
   const [selectedMedicine, setSelectedMedicine] = useState(null);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const {
     data: medicines = [],
@@ -21,12 +28,12 @@ const Shop = () => {
     },
   });
 
+
   refetch();
   if (isLoading) return <div>Loading medicines...</div>;
   if (!medicines.length) return <div>No medicines found.</div>;
 
   const handleViewClick = (medicine) => {
-    console.log(medicine);
     setSelectedMedicine(medicine);
     document.getElementById("my_modal_5").showModal();
   };
@@ -34,6 +41,37 @@ const Shop = () => {
   // Calculate discounted price
   const calculateDiscountedPrice = (price, discount) => {
     return price - price * (discount / 100);
+  };
+
+  // ar to cart option
+  const handleSelectCart = async (medicine) => {
+    const discountPrice = calculateDiscountedPrice(
+      medicine?.price,
+      medicine?.discount
+    );
+    const selectCart = {
+      name: medicine.itemName,
+      image: medicine.image,
+      price: discountPrice,
+      quentity: medicine.quantity,
+      buyerEmail: user?.email,
+    };
+
+    try {
+      if (user) {
+        const result = await axiosSecure.post("/cart", selectCart);
+        console.log(result);
+        navigate("/dashboard/cart-page");
+        toast.success("Product added in the cart.");
+      } else {
+        navigate("/join-us/signup", {
+          state: { from: window.location.pathname },
+        });
+        toast.error("Please SignUp before making a purchase.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -69,7 +107,12 @@ const Shop = () => {
       </div>
       {/* shop table  */}
       <div className="border rounded-lg mb-10">
-        <ShopTable calculateDiscountedPrice={calculateDiscountedPrice} handleViewClick={handleViewClick} medicines={medicines} />
+        <ShopTable
+          handleSelectCart={handleSelectCart}
+          calculateDiscountedPrice={calculateDiscountedPrice}
+          handleViewClick={handleViewClick}
+          medicines={medicines}
+        />
       </div>
 
       {/* Modal for viewing specific medicine */}
