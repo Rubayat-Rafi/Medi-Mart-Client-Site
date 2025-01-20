@@ -8,12 +8,12 @@ import Dashboard from "../Pages/Dashboard/Dashboard";
 import HomeDash from "../Pages/Dashboard/DashBoard Page/HomeDash";
 import ManageProducts from "../Pages/Dashboard/DashBoard Page/ManageProducts";
 import BannerAdvertise from "../Pages/Dashboard/DashBoard Page/BannerAdvertise";
-import Users from "../Pages/Dashboard/DashBoard Page/Users";
 import CategoryProducts from "../Pages/CategoryProducts";
 import ManageMedicines from "../Pages/Dashboard/DashBoard Page/ManageMedicines";
 import Shop from "../Pages/Shop";
 import PrivetRoute from "./PrivetRoute";
 import CartPage from "../Pages/Dashboard/DashBoard Page/CartPage";
+import ManageUsers from "../Pages/Dashboard/DashBoard Page/ManageUsers";
 
 export const router = createBrowserRouter([
     {
@@ -76,7 +76,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'users',
-                element: <PrivetRoute><Users/></PrivetRoute>
+                element: <PrivetRoute><ManageUsers/></PrivetRoute>
             },
         ]
     }

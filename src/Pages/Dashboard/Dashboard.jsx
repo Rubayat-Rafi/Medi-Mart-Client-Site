@@ -11,7 +11,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../../hook/useAuth";
 import { Helmet } from "react-helmet-async";
 import { AiFillMedicineBox } from "react-icons/ai";
-import { FaCartArrowDown } from "react-icons/fa6";
+import { FaCartArrowDown, FaUsers } from "react-icons/fa6";
 
 const Dashboard = () => {
   const { logOut } = useAuth();
@@ -123,7 +123,7 @@ const Dashboard = () => {
                 }`
               }
             >
-              <FaUser className="mr-3" /> Users
+              <FaUsers  className="mr-3" />Manage Users
             </NavLink>
             {/* profile  */}
             <NavLink
