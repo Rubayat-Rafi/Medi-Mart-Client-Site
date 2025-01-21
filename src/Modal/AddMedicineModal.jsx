@@ -9,7 +9,7 @@ const AddMedicineModal = ({ onClose }) => {
   const { register, handleSubmit } = useForm();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  console.log(user);
+
 
   const onSubmit = async (data) => {
     const image = data.image[0];

@@ -24,6 +24,7 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const axiosPublic = useAxiosPublic();
 
+
   //create a new user
   const createUser = (email, password) => {
     setLoading(true);
@@ -63,34 +64,30 @@ const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, facebookProvider);
   };
 
-  // onauthstatechange
-  useEffect(() => {
-    const subscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        axiosPublic.get(`/users/${currentUser.email}`).then((res) => {
-          setUser({ ...currentUser, role: res.data?.role || "user" });
-        });
-      }
-      setUser(currentUser);
-      if (currentUser) {
-        // get token and store client
-        const userInfo = { email: currentUser.email };
-        axiosPublic.post("/jwt", userInfo).then((res) => {
-          if (res.data.token) {
-            localStorage.setItem("access-token", res.data.token);
-          }
-        });
-      } else {
-        // remove token
-        localStorage.removeItem("access-token");
-      }
-      setLoading(false);
-    });
+ // Updated useEffect in auth
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+    if (currentUser) {
+      const userInfo = { email: currentUser.email };
+      axiosPublic.post("/jwt", userInfo).then((res) => {
+        if (res.data.token) {
+          localStorage.setItem("access-token", res.data.token);
+          setUser({ ...currentUser, role: res.data.role || "user" }); 
+        }
+      });
+    } else {
+      localStorage.removeItem("access-token");
+    }
+    setLoading(false);
+  });
 
-    return () => {
-      subscribe();
-    };
-  }, [axiosPublic]);
+  return () => {
+    unsubscribe(); 
+  };
+}, [axiosPublic]);
+
+
 
   const authData = {
     createUser,

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { saveUser } from "../utilities/utils";
 import axios from "axios";
 
+
 const SignIn = () => {
   const { signInUser , setUser,  handleGoogle, handleFacebook} = useAuth();
   const {
@@ -35,9 +36,9 @@ const SignIn = () => {
   try {
     const data = await handleGoogle();  
 
-    const response = await axios.get(`/users/role/${data?.user?.email}`);
-    const role = response?.data?.role || 'user'; 
-
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${data.user.email}`);  
+    
+    const role = response.data?.role || 'user';  
     await saveUser(data?.user, role);  
     setUser({ ...data?.user, role });  
 

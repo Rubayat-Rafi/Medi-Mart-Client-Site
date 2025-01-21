@@ -55,7 +55,14 @@ const SignUp = () => {
   const handleGoogleSignUp = async () => {
     try {
       const data = await handleGoogle();  
-      const response = await axios.get(`/users/${data.user.email}`);  
+
+      console.log(data, 'before response');
+
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${data.user.email}`);  
+
+      console.log(response.data, 'after response');
+
+
       const role = response.data?.role || 'user';  
       await saveUser(data?.user, role);  
       setUser({ ...data?.user, role });  

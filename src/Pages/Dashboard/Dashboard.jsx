@@ -30,7 +30,7 @@ const Dashboard = () => {
     }
   };
 
-  if (isLoading) return <LoadingSpinner />;
+  // if (isLoading) return <LoadingSpinner />;
 
   return (
     <>

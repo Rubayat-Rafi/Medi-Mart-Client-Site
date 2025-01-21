@@ -27,7 +27,7 @@ const ManageUsers = () => {
   };
 
   return (
-    <table className="table">
+    <table className="table  border border-gray-300">
       <thead>
         <tr>
           <th></th>

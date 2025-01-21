@@ -37,7 +37,7 @@ const Shop = () => {
 
 
 
-  if (isLoading) return <LoadingSpinner/>;
+  // if (isLoading) return <LoadingSpinner/>;
   // if (medicines.length < 0) return <div>No medicines found.</div>;
 
   const handleViewClick = (medicine) => {
@@ -52,8 +52,6 @@ const Shop = () => {
 
   // ar to cart option
   const handleSelectCart = async (medicine) => {
-
-
     const discountPrice = calculateDiscountedPrice(
       medicine?.price,
       medicine?.discount

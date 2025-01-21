@@ -14,17 +14,14 @@ export const imageUpload = async (imageData) => {
 };
 
 // save user in database.............
-export const saveUser = async (user, role = "user") => {
-  const response = await axios.get(
-    `${import.meta.env.VITE_API_URL}/users/${user?.email}`
-  );
+export const saveUser = async (user, role = "user") => { 
 
-  if (!response.data) {
     await axios.post(`${import.meta.env.VITE_API_URL}/users/${user?.email}`, {
       name: user?.displayName,
       image: user?.photoURL,
       email: user?.email,
       role: role, 
-    });
-  }
-};
+    })
+    };
+
+      
