@@ -6,6 +6,7 @@ import useAuth from "../../../hook/useAuth";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
+import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 const ManageMedicines = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +28,7 @@ const ManageMedicines = () => {
   });
 
   refetch();
-  if (isLoading) return <div>Loading medicines...</div>;
+  if (isLoading) return <LoadingSpinner/>;
   // if (!medicines.length) return <div>No medicines found.</div>;
 
   const handleViewClick = (medicine) => {
@@ -64,7 +65,7 @@ const ManageMedicines = () => {
           Add Medicine
         </button>
       </div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto border  rounded-lg">
         <table className="table">
           {/* head */}
           <thead>

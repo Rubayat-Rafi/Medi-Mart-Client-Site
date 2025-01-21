@@ -6,7 +6,7 @@ import SignIn from "../Components/SignIn";
 import SignUp from "../Components/SignUp";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import HomeDash from "../Pages/Dashboard/DashBoard Page/HomeDash";
-import ManageProducts from "../Pages/Dashboard/DashBoard Page/ManageProducts";
+import ManageProducts from "../Pages/Dashboard/DashBoard Page/ManageAds";
 import BannerAdvertise from "../Pages/Dashboard/DashBoard Page/BannerAdvertise";
 import CategoryProducts from "../Pages/CategoryProducts";
 import ManageMedicines from "../Pages/Dashboard/DashBoard Page/ManageMedicines";
@@ -14,6 +14,10 @@ import Shop from "../Pages/Shop";
 import PrivetRoute from "./PrivetRoute";
 import CartPage from "../Pages/Dashboard/DashBoard Page/CartPage";
 import ManageUsers from "../Pages/Dashboard/DashBoard Page/ManageUsers";
+import AdminRoute from "./AdminRoute";
+import ManageCategory from "../Pages/Dashboard/DashBoard Page/ManageCategory";
+import SellerRoute from "./SellerRoute";
+import ManageAds from "../Pages/Dashboard/DashBoard Page/ManageAds";
 
 export const router = createBrowserRouter([
     {
@@ -31,6 +35,10 @@ export const router = createBrowserRouter([
             {
                 path: '/shop',
                 element: <Shop/>
+            },
+            {
+                path: '/cart-page',
+                element: <PrivetRoute><CartPage/></PrivetRoute>
             },
             {
                 path:'/join-us',
@@ -60,23 +68,23 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'manage-medicines',
-                element: <PrivetRoute><ManageMedicines/></PrivetRoute>
+                element: <PrivetRoute> <SellerRoute> <ManageMedicines/> </SellerRoute> </PrivetRoute>
             },
             {
-                path: 'cart-page',
-                element: <PrivetRoute><CartPage/></PrivetRoute>
-            },
-            {
-                path: 'products',
-                element: <PrivetRoute><ManageProducts/></PrivetRoute>
+                path: 'ads',
+                element: <PrivetRoute> <SellerRoute> <ManageAds/> </SellerRoute>  </PrivetRoute>
             },
             {
                 path: 'advertise',
-                element: <PrivetRoute><BannerAdvertise/></PrivetRoute>
+                element: <PrivetRoute> <AdminRoute><BannerAdvertise/></AdminRoute> </PrivetRoute>
             },
             {
                 path: 'users',
-                element: <PrivetRoute><ManageUsers/></PrivetRoute>
+                element: <PrivetRoute> <AdminRoute> <ManageUsers/> </AdminRoute> </PrivetRoute>
+            },
+            {
+                path: 'manage-category',
+                element: <PrivetRoute> <AdminRoute> <ManageCategory /> </AdminRoute> </PrivetRoute>
             },
         ]
     }

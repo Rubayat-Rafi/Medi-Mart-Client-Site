@@ -7,13 +7,9 @@ import useAxiosPublic from "../hook/useAxiosPublic";
 const CartTable = ({ carts = [], handleCartDelete, refetch }) => {
   const axiosPublic = useAxiosPublic();
 
-
-  
-
   const handleIncrement = async (id, price, quantity) => {
-
-    if(quantity <= 0){
-        return toast.error('nafiz vaiii');
+    if (quantity <= 0) {
+      return toast.error("nafiz vaiii");
     }
     try {
       const res = await axiosPublic.patch(`/update-count/${id}`, {
@@ -31,10 +27,10 @@ const CartTable = ({ carts = [], handleCartDelete, refetch }) => {
   const handleDecrement = async (id, price, quantity, count) => {
     console.log(price);
 
-    if(count <= 0  ){
-        return toast.error('Abdullah  vaiii');
+    if (count <= 0) {
+      return toast.error("Abdullah  vaiii");
     }
-   
+
     try {
       const res = await axiosPublic.patch(`/update-count/${id}`, {
         count: "decrement",
@@ -78,8 +74,9 @@ const CartTable = ({ carts = [], handleCartDelete, refetch }) => {
               <td>{cart.name}</td>
               <td>{cart.price} Taka</td>
               <td>{cart?.quantity}</td>
-              <td>
+              <td className="space-x-3">
                 <button
+                  className="py-1 px-2 bg-mainColor text-white rounded-md hover:bg-secondBgColor "
                   onClick={() =>
                     handleIncrement(cart?._id, cart?.price, cart?.quantity)
                   }
@@ -88,8 +85,14 @@ const CartTable = ({ carts = [], handleCartDelete, refetch }) => {
                 </button>
                 <span>{cart.count}</span>
                 <button
+                  className=" px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 "
                   onClick={() =>
-                    handleDecrement(cart?._id, cart?.price, cart?.quantity, cart?.count)
+                    handleDecrement(
+                      cart?._id,
+                      cart?.price,
+                      cart?.quantity,
+                      cart?.count
+                    )
                   }
                 >
                   -
@@ -98,7 +101,7 @@ const CartTable = ({ carts = [], handleCartDelete, refetch }) => {
               <td>
                 <button
                   onClick={() => handleCartDelete(cart._id)}
-                  className="text-xl hover:scale-105 transition text-red-500"
+                  className=" font-bold text-xl hover:scale-105 transition text-red-500"
                 >
                   <MdDeleteForever />
                 </button>

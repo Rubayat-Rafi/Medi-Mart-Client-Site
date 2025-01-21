@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../hook/useAxiosSecure";
 import LoadingSpinner from "../Components/LoadingSpinner";
+import axios from "axios";
 
 const Shop = () => {
   const axiosPublic = useAxiosPublic();
@@ -22,7 +23,7 @@ const Shop = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["medicine"],
+    queryKey: ["medicines"],
     queryFn: async () => {
       const { data } = await axiosPublic.get("/shop-medicine");
       return data;
@@ -32,9 +33,12 @@ const Shop = () => {
   console.log(medicines)
 
 
-  refetch();
+
+
+
+
   if (isLoading) return <LoadingSpinner/>;
-  if (!medicines.length) return <div>No medicines found.</div>;
+  // if (medicines.length < 0) return <div>No medicines found.</div>;
 
   const handleViewClick = (medicine) => {
     setSelectedMedicine(medicine);
@@ -67,22 +71,9 @@ const Shop = () => {
       if (user) {
         const result = await axiosSecure.post("/cart", selectCart);
         console.log(result);
-        navigate("/dashboard/cart-page");
+        navigate("/cart-page");
         toast.success("Product added in the cart.");
-        // if(){
 
-        //   const {
-        //     data: carts = [],
-        //     isLoading,
-        //     refetch,
-        //   } = useQuery({
-        //     queryKey: ["carts", user?.email],
-        //     queryFn: async () => {
-        //       const { data } = await axiosSecure.get(`/carts/${user?.email}`);
-        //       return data;
-        //     },
-        //   });
-        // }
 
       } else {
         navigate("/join-us/signup", {

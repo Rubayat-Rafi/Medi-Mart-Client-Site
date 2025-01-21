@@ -14,6 +14,7 @@ const ManageUsers = () => {
   });
 
   if(isLoading) return <LoadingSpinner/>
+  if(users.length < 0) return <div>No User Found...</div>
 
   const updateUserRole = async (email, role) => {
     try {
@@ -26,7 +27,7 @@ const ManageUsers = () => {
   };
 
   return (
-    <table className="table border rounded-lg">
+    <table className="table">
       <thead>
         <tr>
           <th></th>

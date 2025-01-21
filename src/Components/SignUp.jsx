@@ -1,15 +1,17 @@
 import { useForm } from "react-hook-form";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import useAuth from "../hook/useAuth";
-import { imageUpload , saveUser} from "../utilities/utils";
+import { imageUpload, saveUser } from "../utilities/utils";
 import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const SignUp = () => {
-  const { createUser, setUser, updateUser, handleGoogle, handleFacebook } =
+  const { createUser,setUser, updateUser, handleGoogle, handleFacebook } =
     useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from || '/';
+  const from = location.state?.from || "/";
 
   const {
     register,
@@ -17,43 +19,49 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
 
-
-
   const handleSignUpForm = async (data) => {
     // data.preventDefault()
-    console.log(data);
     const email = data.email;
     const username = data.username;
     const password = data.password;
-    const role = data.role || 'user';
+    const role = data.role;
     const image = data.photo[0];
 
-    // sent image data to imgbb with imageUpload hook
-    const photoURL = await imageUpload(image);
-   
-
     try {
-      const result = await createUser(email, password);
-      await updateUser(username, photoURL);
+    // Send image data to imgbb with imageUpload hook 
+    const photoURL = await imageUpload(image); 
 
-      // save user info in db if the user is new
-      await saveUser({ ...result?.user, displayName: username, photoURL }, role)
+    // Create user with email and password 
+    const result = await createUser(email, password); 
 
-      setUser(result);
-      navigate(from, { replace: true });
-    } catch (error) {
-      console.log(error);
+    // Update user with username and photoURL 
+    await updateUser(username, photoURL); console.log(result); 
+
+    // Save user info in DB if the user is new 
+    if (result?.user?.email) {
+      await saveUser({ email: result.user.email, displayName: username, photoURL, role });
     }
+
+    toast.success("User created successfully!");
+    navigate(from, { replace: true });
+   }
+     catch (error) {
+       console.error("Error during sign up:", error); 
+     }
   };
+
 
   //handle google signUp
   const handleGoogleSignUp = async () => {
     try {
-      const data =  await handleGoogle();
-      await saveUser(data?.user)
+      const data = await handleGoogle();  
+      const response = await axios.get(`/users/${data.user.email}`);  
+      const role = response.data?.role || 'user';  
+      await saveUser(data?.user, role);  
+      setUser({ ...data?.user, role });  
       navigate(from, { replace: true });
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.error("Google Sign-In Error:", error);
     }
   };
 
@@ -61,7 +69,7 @@ const SignUp = () => {
   const handleFacebookSignUp = async () => {
     try {
       const data = await handleFacebook();
-      await saveUser(data?.user)
+      await saveUser(data?.user);
       navigate(from, { replace: true });
     } catch (err) {
       console.log(err);

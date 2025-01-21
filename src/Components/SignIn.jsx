@@ -3,15 +3,17 @@ import useAuth from "../hook/useAuth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { saveUser } from "../utilities/utils";
+import axios from "axios";
 
 const SignIn = () => {
-  const { signInUser , handleGoogle, handleFacebook} = useAuth();
+  const { signInUser , setUser,  handleGoogle, handleFacebook} = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+
 
 
 
@@ -30,13 +32,19 @@ const SignIn = () => {
 
   // handle Google SignIn 
   const handleGoogleSignIn = async () => {
-    try {
-    const data =  await handleGoogle();
-    await saveUser(data?.user)
-      navigate("/");
-    } catch (err) {
-      console.log(err);
-    }
+  try {
+    const data = await handleGoogle();  
+
+    const response = await axios.get(`/users/role/${data?.user?.email}`);
+    const role = response?.data?.role || 'user'; 
+
+    await saveUser(data?.user, role);  
+    setUser({ ...data?.user, role });  
+
+    navigate('/');
+  } catch (error) {
+    console.error("Google Sign-In Error:", error);
+  }
   }
   // handle facebook SignIn 
   const handleFacebookSignIn = async () => {

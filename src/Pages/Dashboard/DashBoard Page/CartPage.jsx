@@ -36,7 +36,7 @@ const CartPage = () => {
   }
 
   return (
-    <div>
+    <div className="mx-auto max-w-[1440px] w-11/12">
       <div className="flex items-center justify-between my-5">
         <div>
           <h1 className="text-xl font-bold">My Cart</h1>
