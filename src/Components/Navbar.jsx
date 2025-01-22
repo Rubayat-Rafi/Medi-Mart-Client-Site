@@ -34,26 +34,26 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-base-100 shadow-lg">
+    <div className="bg-base-100 shadow-lg ">
       <nav className="navbar mx-auto max-w-[1440px]">
         <div className="flex-1">
           <Link to="/">
             <a className=" text-xl font-bold text-primaryTextColor">MediMart</a>
           </Link>
         </div>
-        <div className="flex-none">
+        <div className="flex-none z-50">
           {user === null && (
             <ul className="menu menu-horizontal px-1">{links}</ul>
           )}
           <Menu>
-            <MenuButton className="inline-flex items-center gap-2 rounded-md bg-mainColor py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-secondBgColor data-[open]:bg-secondBgColor data-[focus]:outline-1 data-[focus]:outline-white">
+            <MenuButton className="inline-flex items-center gap-2  rounded-md bg-mainColor py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-secondBgColor data-[open]:bg-secondBgColor data-[focus]:outline-1 data-[focus]:outline-white">
               Lan
               <IoLanguage />
             </MenuButton>
             <MenuItems
               transition
               anchor="bottom"
-              className="w-16 mt-2 origin-top-right rounded-xl border border-black bg-gray-700 p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+              className="w-16 mt-2 origin-top-right rounded-xl border z-50 border-black bg-gray-700 p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
             >
               <MenuItem>
                 <button className="group  flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">

@@ -1,62 +1,105 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hook/useAxiosSecure";
+import { useState } from "react";
+import {toast} from 'react-hot-toast';
+
 
 const BannerAdvertise = () => {
-    const axiosSecure = useAxiosSecure()
 
-  const {data: banner = []}=useQuery({
-    queryKey: ['banner'],
+  const axiosSecure = useAxiosSecure();
+  const [isToggle, setIsToggle] = useState(false);
+
+  const { data: banners = [] } = useQuery({
+    queryKey: ["banner"],
     queryFn: async () => {
-        const {data} = await axiosSecure.get('/ads-banners')
-        return data
+      const { data } = await axiosSecure.get("/all-banner");
+      return data;
+    },
+  });
+
+  console.log(banners);
+
+
+  // toggle handle function
+  const handleToggle = async(e, id) => {
+    const newStatus = e.target.checked ? "active" : "inactive";
+    try{
+    await axiosSecure.patch(`/banner/status/${id}`, { status: newStatus});
+     if(newStatus === "active"){
+      setIsToggle(true);
+       toast.success(`Banner is ${newStatus} now.`);
+      }
+      else{
+        setIsToggle(false);
+        toast.error(`Banner is ${newStatus} now.`);
+      }
+    }catch(err){
+      console.log(err);
     }
-  })
+  };
 
-  console.log(banner)
 
-  
-    return (
-      <div className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Manage Banner Advertise</h2>
-        <div className="overflow-x-auto border rounded-lg">
-      <table className="table">
-        {/* head */}
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Medicine Name</th>
-            <th>Description</th>
-            <th>Seller Email</th>
-            <th>Add to Slide</th>
-          </tr>
 
-          </thead>
-          <tbody>
-  
-              <tr >
-                <td className=" border">
-                  <img src='' alt='medicine image' className="w-16 h-16 object-cover" />
-                </td>
-                <td className=" border">Condom</td>
-                <td className=" border">Description</td>
-                <td className=" border">alu@gmail.com</td>
-                <td className=" border">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      className="toggle-checkbox"
-                    />
-                    <span className="ml-2 text-sm">Remove  Add</span>
-                  </label>
-                </td>
-              </tr>
 
-          </tbody>
-        </table>
+
+  return (
+    <div className="p-6">
+      <h2 className="text-xl font-semibold mb-4">Manage Banner Advertise</h2>
+
+      {/* table */}
+      {banners.length < 0 ? (
+        <div>No Data Found...</div>
+      ) : (
+        <div className=" border rounded-lg">
+          <div className="overflow-x-auto">
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Seller Email</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* body  */}
+                {banners.map((banner) => (
+                  <tr key={banner._id}>
+                    <td>
+                      <img
+                        src={banner.photoURL}
+                        alt="medicine image"
+                        className="w-16 h-16 object-cover rounded-lg"
+                      />
+                    </td>
+                    <td>{banner.medicineName.substring(0, 20)}...</td>
+                    <td>{banner.description.substring(0, 20)}...</td>
+                    <td>{banner.sellerEmail}</td>
+                    {/* toggle button  */}
+                    <td>
+                      <div className="flex items-center justify-cente gap-2">
+                        <input
+                          type="checkbox"
+                          className="toggle toggle-sm toggle-success"
+                          defaultChecked={banner.status === "active" ? true : false}
+                          onChange={(e)=> handleToggle(e, banner._id)}
+                        />
+                        <span className="text-[10px]">
+                          {isToggle ?  "Remove Slide" :"Add Slide" }
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default BannerAdvertise;
-

@@ -59,14 +59,14 @@ const SignUp = () => {
       console.log(data, 'before response');
 
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${data.user.email}`);  
-
       console.log(response.data, 'after response');
 
-
       const role = response.data?.role || 'user';  
+
       await saveUser(data?.user, role);  
       setUser({ ...data?.user, role });  
       navigate(from, { replace: true });
+
     } catch (error) {
       console.error("Google Sign-In Error:", error);
     }

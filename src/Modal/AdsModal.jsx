@@ -5,7 +5,7 @@ import useAxiosSecure from "../hook/useAxiosSecure";
 import toast from "react-hot-toast";
 import { imageUpload } from "../utilities/utils";
 
-const AdsModal = ({ onClose }) => {
+const AdsModal = ({ onClose, refetch }) => {
   const { register, handleSubmit } = useForm();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
@@ -28,6 +28,7 @@ const AdsModal = ({ onClose }) => {
     try {
       await axiosSecure.post("/ads-medicine", medicineData);
       toast.success("Request Successfully Sent!");
+      refetch();
     } catch (error) {
       toast.error(`An ${error} Happend.`);
     } finally {
@@ -46,7 +47,7 @@ const AdsModal = ({ onClose }) => {
           <div className="flex items-center gap-2">
             <input
               {...register("medicineName", { required: true })}
-              placeholder="Medicine Name"
+              placeholder="Banner Title"
               className="w-full px-4 py-2 text-gray-700 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
             />
             <input
@@ -57,7 +58,7 @@ const AdsModal = ({ onClose }) => {
           </div>
           <textarea
             {...register("description", { required: true })}
-            placeholder="Short Description"
+            placeholder="Banner Short Description"
             className="w-full px-4 py-2 text-gray-700 border resize-none rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
           />
           <div className="mt-4">
@@ -79,6 +80,7 @@ const AdsModal = ({ onClose }) => {
 
 AdsModal.propTypes = {
   onClose: PropTypes.func.isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
 export default AdsModal;
