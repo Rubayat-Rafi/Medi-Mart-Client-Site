@@ -17,9 +17,6 @@ const BannerAdvertise = () => {
     },
   });
 
-  console.log(banners);
-
-
   // toggle handle function
   const handleToggle = async(e, id) => {
     const newStatus = e.target.checked ? "active" : "inactive";
@@ -47,7 +44,7 @@ const BannerAdvertise = () => {
       <h2 className="text-xl font-semibold mb-4">Manage Banner Advertise</h2>
 
       {/* table */}
-      {banners.length < 0 ? (
+      {banners.length === 0 ? (
         <div>No Data Found...</div>
       ) : (
         <div className=" border rounded-lg">

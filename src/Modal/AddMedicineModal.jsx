@@ -4,12 +4,24 @@ import { imageUpload } from "../utilities/utils";
 import PropTypes from "prop-types";
 import toast from "react-hot-toast";
 import useAuth from "../hook/useAuth";
+import useAxiosPublic from "../hook/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
 
 const AddMedicineModal = ({ onClose }) => {
   const { register, handleSubmit } = useForm();
   const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic()
   const { user } = useAuth();
 
+  const {
+    data: categorys = []
+  } = useQuery({
+    queryKey: ["categorys"],
+    queryFn: async () => {
+      const { data } = await axiosPublic.get(`/categorys`);
+      return data;
+    },
+  });
 
   const onSubmit = async (data) => {
     const image = data.image[0];
@@ -88,13 +100,11 @@ const AddMedicineModal = ({ onClose }) => {
               {...register("category", { required: true })}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
             >
+
               <option value="">Select Category</option>
-              <option value="OTC-Medicine">OTC Medicine</option>
-              <option value="Women's-Choice">Women&apos;s Choice</option>
-              <option value="Sexual-Wellness">Sexual Wellness</option>
-              <option value="Diabetic-Care">Diabetic Care</option>
-              <option value="Baby-Care">Baby Care</option>
-              <option value="Injection">Injection</option>
+              {categorys.map((category) => (
+              <option key={category._id} value={category.categoryName}>{category.categoryName}</option>
+              ))}
             </select>
           </div>
           <div className="w-full flex items-center gap-2">

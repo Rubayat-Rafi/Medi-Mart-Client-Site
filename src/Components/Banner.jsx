@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import useAxiosSecure from "../hook/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
@@ -14,12 +14,12 @@ import "swiper/css/autoplay";
 
 // import required modules
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper/modules";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Banner = () => {
-    const [slides, setSlides] = useState([]);
     const axiosSecure = useAxiosSecure();
   
-    const { data: banners = [] } = useQuery({
+    const { data: banners = [], isLoading } = useQuery({
       queryKey: ["banner"],
       queryFn: async () => {
         const { data } = await axiosSecure.get("/active-banner");
@@ -27,15 +27,10 @@ const Banner = () => {
       },
     });
 
-    console.log(banners)
-
-
-
+    if(isLoading) return <LoadingSpinner />
 
 
   return (
-
-
     <>
     <Swiper
       spaceBetween={30}
@@ -66,9 +61,9 @@ const Banner = () => {
                 {slide.medicineName}
               </h1>
               <p className=" text-sm md:text-lg">{slide.description}</p>
-              <Link to={`/all-foods`}>
-                <button className="mt-4 md:mt-6 md:px-6 md:py-2 text-sm py-1 px-2 md:text-lg transition-all duration-300 bg-orange-500 font-medium hover:bg-orange-600 rounded-md">
-                  View All Foods
+              <Link to={`/shop`}>
+                <button className="mt-4 md:mt-6 md:px-6 md:py-2 text-sm py-1 px-2 md:text-lg transition-all duration-300 bg-mainColor font-medium hover:bg-secondBgColor rounded-md">
+                  Shop Now
                 </button>
               </Link>
             </div>

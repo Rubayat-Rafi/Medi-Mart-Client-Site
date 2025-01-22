@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { saveUser } from "../utilities/utils";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 
 const SignIn = () => {
@@ -19,13 +20,14 @@ const SignIn = () => {
 
 
   const handleSignIn = async data => {
-
     const email = data.email;
     const password = data.password;
 
     try{
      await signInUser(email, password);
+     toast.success('Successfully Signin')
      navigate('/')
+
     }catch(error){
       console.log(error)
     }

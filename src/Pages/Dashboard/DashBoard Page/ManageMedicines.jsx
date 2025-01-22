@@ -7,6 +7,7 @@ import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
+import toast from "react-hot-toast";
 
 const ManageMedicines = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,8 +29,7 @@ const ManageMedicines = () => {
   });
 
   refetch();
-  if (isLoading) return <LoadingSpinner/>;
-  // if (!medicines.length) return <div>No medicines found.</div>;
+  if (isLoading) return <LoadingSpinner />;
 
   const handleViewClick = (medicine) => {
     console.log(medicine);
@@ -48,6 +48,7 @@ const ManageMedicines = () => {
     try {
       await axiosSecure.delete(`/delete/${id}`);
       // Refetch the data after deletion
+      toast.success("Successfully Deleted.");
       refetch();
     } catch (error) {
       console.log(error);
@@ -65,47 +66,57 @@ const ManageMedicines = () => {
           Add Medicine
         </button>
       </div>
-      <div className="overflow-x-auto border  rounded-lg">
-        <table className="table">
-          {/* head */}
-          <thead>
-            <tr>
-              <th></th>
-              <th>Medicine Name</th>
-              <th>Company</th>
-              <th>Generic Name</th>
-              <th>Price</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* row 1 */}
-            {medicines.map((medicine, index) => (
-              <tr key={medicine._id}>
-                <th>{index + 1}</th>
-                <td>{medicine.itemName}</td>
-                <td>{medicine.company}</td>
-                <td>{medicine.genericName}</td>
-                <td>{calculateDiscountedPrice(medicine.price, medicine.discount)}</td>
-                <td className="flex items-center gap-2  justify-between">
-                  <button
-                    className="text-lg hover:scale-105 transition text-primaryTextColor"
-                    onClick={() => handleViewClick(medicine)}
-                  >
-                    <FaEye />
-                  </button>
-                  <button
-                    className="text-xl hover:scale-105 transition text-red-500"
-                    onClick={() => handleDeleteMedicine(medicine._id)}
-                  >
-                    <MdDeleteForever />
-                  </button>
-                </td>
+
+      {medicines.length === 0 ? (
+        <div>No Data Found...</div>
+      ) : (
+        <div className="overflow-x-auto border  rounded-lg">
+          <table className="table">
+            {/* head */}
+            <thead>
+              <tr>
+                <th></th>
+                <th>Medicine Name</th>
+                <th>Company</th>
+                <th>Generic Name</th>
+                <th>Price</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {/* row 1 */}
+              {medicines.map((medicine, index) => (
+                <tr key={medicine._id}>
+                  <th>{index + 1}</th>
+                  <td>{medicine.itemName}</td>
+                  <td>{medicine.company}</td>
+                  <td>{medicine.genericName}</td>
+                  <td>
+                    {calculateDiscountedPrice(
+                      medicine.price,
+                      medicine.discount
+                    )}
+                  </td>
+                  <td className="flex items-center gap-2  justify-between">
+                    <button
+                      className="text-lg hover:scale-105 transition text-primaryTextColor"
+                      onClick={() => handleViewClick(medicine)}
+                    >
+                      <FaEye />
+                    </button>
+                    <button
+                      className="text-xl hover:scale-105 transition text-red-500"
+                      onClick={() => handleDeleteMedicine(medicine._id)}
+                    >
+                      <MdDeleteForever />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {isModalOpen && (
         <AddMedicineModal onClose={() => setIsModalOpen(false)} />
