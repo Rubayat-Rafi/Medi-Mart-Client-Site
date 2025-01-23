@@ -5,8 +5,6 @@ import JoinUs from "../Pages/JoinUs";
 import SignIn from "../Components/SignIn";
 import SignUp from "../Components/SignUp";
 import Dashboard from "../Pages/Dashboard/Dashboard";
-import HomeDash from "../Pages/Dashboard/DashBoard Page/HomeDash";
-import ManageProducts from "../Pages/Dashboard/DashBoard Page/ManageAds";
 import BannerAdvertise from "../Pages/Dashboard/DashBoard Page/BannerAdvertise";
 import CategoryProducts from "../Pages/CategoryProducts";
 import ManageMedicines from "../Pages/Dashboard/DashBoard Page/ManageMedicines";
@@ -18,6 +16,9 @@ import AdminRoute from "./AdminRoute";
 import ManageCategory from "../Pages/Dashboard/DashBoard Page/ManageCategory";
 import SellerRoute from "./SellerRoute";
 import ManageAds from "../Pages/Dashboard/DashBoard Page/ManageAds";
+import Statistics from "../Pages/Dashboard/Statistics";
+import PaymentHistory from "../Pages/Dashboard/DashBoard Page/PaymentHistory";
+import CheckoutPage from "../Pages/Dashboard/CheckoutPage";
 
 export const router = createBrowserRouter([
     {
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
             {
                 path: '/cart-page',
                 element: <PrivetRoute><CartPage/></PrivetRoute>
+            },
+            {
+                path: '/checkout-page',
+                element: <PrivetRoute> <CheckoutPage/> </PrivetRoute>
             },
             {
                 path:'/join-us',
@@ -64,7 +69,7 @@ export const router = createBrowserRouter([
         children : [
             {
                 index: true,
-                element: <HomeDash/>
+                element: <PrivetRoute><Statistics/></PrivetRoute>
             },
             {
                 path: 'manage-medicines',
@@ -85,6 +90,10 @@ export const router = createBrowserRouter([
             {
                 path: 'manage-category',
                 element: <PrivetRoute> <AdminRoute> <ManageCategory /> </AdminRoute> </PrivetRoute>
+            },
+            {
+                path: 'payment-history',
+                element: <PrivetRoute>  <PaymentHistory />  </PrivetRoute>
             },
         ]
     }

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../hook/useAxiosSecure";
 import LoadingSpinner from "../Components/LoadingSpinner";
-import axios from "axios";
+
 
 const Shop = () => {
   const axiosPublic = useAxiosPublic();
@@ -21,7 +21,6 @@ const Shop = () => {
   const {
     data: medicines = [],
     isLoading,
-    refetch,
   } = useQuery({
     queryKey: ["medicines"],
     queryFn: async () => {
@@ -33,12 +32,7 @@ const Shop = () => {
   console.log(medicines)
 
 
-
-
-
-
-  // if (isLoading) return <LoadingSpinner/>;
-  // if (medicines.length < 0) return <div>No medicines found.</div>;
+  if (isLoading) return <LoadingSpinner/>;
 
   const handleViewClick = (medicine) => {
     setSelectedMedicine(medicine);
@@ -71,7 +65,6 @@ const Shop = () => {
         console.log(result);
         navigate("/cart-page");
         toast.success("Product added in the cart.");
-
 
       } else {
         navigate("/join-us/signup", {

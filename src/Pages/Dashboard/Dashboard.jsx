@@ -14,6 +14,12 @@ import { AiFillMedicineBox } from "react-icons/ai";
 import { FaUsers } from "react-icons/fa6";
 import useRole from "../../hook/useRole";
 import LoadingSpinner from "../../Components/LoadingSpinner";
+import { FcStatistics } from "react-icons/fc";
+import { MdPayment } from "react-icons/md";
+
+
+
+
 
 const Dashboard = () => {
   const { logOut } = useAuth();
@@ -30,7 +36,7 @@ const Dashboard = () => {
     }
   };
 
-  // if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <>
@@ -70,6 +76,21 @@ const Dashboard = () => {
               >
                 <FaHome className="mr-3" /> Home
               </NavLink>
+
+              {/* Statistics  */}
+              {role === "admin" && (
+                <NavLink
+                  to="/dashboard"
+                  end
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded hover:bg-gray-700 ${
+                      isActive ? "bg-gray-700" : ""
+                    }`
+                  }
+                >
+                  <FcStatistics className="mr-3" /> Statistics
+                </NavLink>
+              )}
               {/* Manage Medicines */}
               {role === "seller" && (
                 <NavLink
@@ -85,21 +106,22 @@ const Dashboard = () => {
               )}
 
               {/*Ask for Ads */}
-              {role === "seller" && (
-                <NavLink
-                  to="/dashboard/ads"
-                  className={({ isActive }) =>
-                    `flex items-center p-2 rounded hover:bg-gray-700 ${
-                      isActive ? "bg-gray-700" : ""
-                    }`
-                  }
-                >
-                  <RiAdvertisementFill className="mr-3" /> Ask for Ads
-                </NavLink>
-              )}
+              {role === "admin" ||
+                (role === "seller" && (
+                  <NavLink
+                    to="/dashboard/ads"
+                    className={({ isActive }) =>
+                      `flex items-center p-2 rounded hover:bg-gray-700 ${
+                        isActive ? "bg-gray-700" : ""
+                      }`
+                    }
+                  >
+                    <RiAdvertisementFill className="mr-3" /> Ask for Ads
+                  </NavLink>
+                ))}
 
               {/* Manage category */}
-              {role === "admin" && (
+              { role === "admin" && (
                 <NavLink
                   to="/dashboard/manage-category"
                   className={({ isActive }) =>
@@ -138,6 +160,20 @@ const Dashboard = () => {
                 >
                   <FaUsers className="mr-3" />
                   Manage Users
+                </NavLink>
+              )}
+
+              {/* Payment history */}
+              {role !== "admin" && (
+                <NavLink
+                  to="/dashboard/payment-history"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded hover:bg-gray-700 ${
+                      isActive ? "bg-gray-700" : ""
+                    }`
+                  }
+                >
+                  <MdPayment  className="mr-3" /> Payment History
                 </NavLink>
               )}
 

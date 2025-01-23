@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import useAxiosPublic from "../hook/useAxiosPublic";
 import LoadingSpinner from "./LoadingSpinner";
 import { useQuery } from "@tanstack/react-query";
+
+
+
 const Category = () => {
   const axiosPublic = useAxiosPublic();
 
@@ -16,6 +19,8 @@ const Category = () => {
     },
   });
 
+
+
   if(isLoading) return <LoadingSpinner/>
 
   return (
@@ -25,7 +30,7 @@ const Category = () => {
         {categorys.map((category, index) => (
           <Link
             key={index}
-            to={`/category/${category.category}`}
+            to={`/category/${category.categoryName}`}
             className="p-4 border  shadow hover:shadow-lg flex items-center rounded-full"
           >
             <img
@@ -35,7 +40,7 @@ const Category = () => {
             />
             <div className="ml-2">
               <h3 className="text-base font-bold mt-2">{category.categoryName}</h3>
-              <p className="text-[10px]">{category.medicineCount} Medicines</p>
+              <p className="text-[10px]"> Medicines</p>
             </div>
           </Link>
         ))}

@@ -36,7 +36,7 @@ const BannerAdvertise = () => {
   };
 
 
-
+console.log(isToggle)
 
 
   return (
@@ -84,7 +84,7 @@ const BannerAdvertise = () => {
                           onChange={(e)=> handleToggle(e, banner._id)}
                         />
                         <span className="text-[10px]">
-                          {isToggle ?  "Remove Slide" :"Add Slide" }
+                        {isToggle ? "Remove Slide" : "Add Slide"}
                         </span>
                       </div>
                     </td>
