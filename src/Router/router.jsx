@@ -19,6 +19,7 @@ import ManageAds from "../Pages/Dashboard/DashBoard Page/ManageAds";
 import Statistics from "../Pages/Dashboard/Statistics";
 import PaymentHistory from "../Pages/Dashboard/DashBoard Page/PaymentHistory";
 import CheckoutPage from "../Pages/Dashboard/CheckoutPage";
+import InvoicePage from "../Pages/InvoicePage";
 
 export const router = createBrowserRouter([
     {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
             {
                 path: '/checkout-page',
                 element: <PrivetRoute> <CheckoutPage/> </PrivetRoute>
+            },
+            {
+                path: '/invoice',
+                element: <PrivetRoute> <InvoicePage/> </PrivetRoute>
             },
             {
                 path:'/join-us',

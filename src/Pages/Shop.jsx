@@ -29,7 +29,6 @@ const Shop = () => {
     },
   });
 
-  console.log(medicines)
 
 
   if (isLoading) return <LoadingSpinner/>;
@@ -44,19 +43,21 @@ const Shop = () => {
     return price - price * (discount / 100);
   };
 
-  // ar to cart option
+  // add to cart option
   const handleSelectCart = async (medicine) => {
     const discountPrice = calculateDiscountedPrice(
       medicine?.price,
       medicine?.discount
     );
     const selectCart = {
-      name: medicine.itemName,
-      image: medicine.image,
+      name: medicine?.itemName,
+      image: medicine?.image,
       price: discountPrice,
-      quantity: medicine.quantity,
+      quantity: medicine?.quantity,
       buyerEmail: user?.email,
-      count: medicine?.counter
+      count: medicine?.counter,
+      unitPrice: discountPrice,
+      cartId: medicine?._id,
     };
 
     try {
@@ -73,7 +74,7 @@ const Shop = () => {
         toast.error("Please SignUp before making a purchase.");
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   };
 

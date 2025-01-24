@@ -3,15 +3,17 @@ import LoadingSpinner from "../../../Components/LoadingSpinner";
 import { Button } from "@headlessui/react";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdDeleteForever } from "react-icons/md";
 import useCart from "../../../hook/useCart";
+import useAuth from "../../../hook/useAuth";
 
 
 const CartPage = () => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const [carts, isLoading, refetch] = useCart();
+  const {user} = useAuth();
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -96,7 +98,6 @@ const CartPage = () => {
   };
 
   const handleUpdateCart = async (id, price, quantity, count, action) => {
-    console.log(id, price, quantity, count);
     if (action === "increase" && quantity <= 0) {
       return toast.error("Stock not available!");
     }
@@ -124,7 +125,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className="mx-auto max-w-[1440px] w-11/12">
+    <div className="mx-auto max-w-[1440px] w-11/12 mb-10">
       <div className="flex items-center justify-between my-5">
         <div>
           <h1 className="text-xl font-bold">My Cart</h1>
@@ -148,9 +149,9 @@ const CartPage = () => {
       </div>
 
       {carts.length === 0 ? (
-        <div>No data found.</div>
+        <div>No data found. <Link to={`/shop`} className="px-2 py-1 bg-mainColor text-white rounded-sm hover:bg-secondBgColor transition" >Shop Now</Link> </div>
       ) : (
-        <div className="border rounded-lg mb-10">
+        <div className="border rounded-lg ">
           <div className="overflow-x-auto">
             <table className="table">
               {/* head */}

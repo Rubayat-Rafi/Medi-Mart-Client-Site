@@ -3,13 +3,13 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from "react-router-dom";
 import CheckoutForm from "../../Components/CheckoutForm";
 
+
 const CheckoutPage = () => {
   const navigate = useNavigate();
 
   const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-
+  
   const handlePaymentSuccess = (paymentData) => {
-    // After payment success, navigate to the invoice page
     navigate("/invoice", { state: { paymentData } });
   };
 

@@ -4,18 +4,53 @@ import useAuth from "../hook/useAuth";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../hook/useAxiosSecure";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import useCart from "../hook/useCart";
+import Swal from "sweetalert2";
 
 const CheckoutForm = ({ onPaymentSuccess }) => {
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const [clientSecret, setClientSecret] = useState('');
+  const [clientSecret, setClientSecret] = useState("");
   const [carts] = useCart();
-  console.log(carts)
+  const [amount, setAmount] = useState();
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  // Calculate total price on the frontend
+  const totalPrice = carts.reduce(
+    (acc, cart) => acc + cart.unitPrice * cart.count,
+    0
+  );
 
+  // Use useEffect to fetch the clientSecret when the component mounts
+  useEffect(() => {
+    const fetchClientSecret = async () => {
+      try {
+        const { data } = await axiosSecure.post("/create-payment-intent", {
+          email: user?.email,
+        });
+        setAmount(data.amount)
+        setClientSecret(data.clientSecret);
+
+      } catch (err) {
+        console.error("Error fetching clientSecret:", err.message);
+      }
+    };
+
+    if (user?.email) {
+      fetchClientSecret();
+    }
+  }, [user?.email, axiosSecure]);
+
+
+
+
+
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -32,9 +67,11 @@ const CheckoutForm = ({ onPaymentSuccess }) => {
       type: "card",
       card: cardElement,
       billing_details: {
-        name: data.name,
-        email: data.email,
-        address: { line1: data.address },
+        name: user?.displayName,
+        email: user?.email,
+        address: {
+          line1: data.address,
+        },
       },
     });
 
@@ -42,7 +79,6 @@ const CheckoutForm = ({ onPaymentSuccess }) => {
       console.error(error);
       toast.error("Payment failed!");
     } else {
-      // Proceed to confirm the payment
       confirmPayment(paymentMethod);
     }
   };
@@ -53,43 +89,27 @@ const CheckoutForm = ({ onPaymentSuccess }) => {
       payment_method: paymentMethod.id,
     });
 
-    if (paymentIntent.status === 'succeeded') {
+    if (paymentIntent.status === "succeeded") {
       try {
-        await axiosSecure.post('/order', {
-          email: user.email,
+        await axiosSecure.post("/order", {
+          buyerEmail: user.email,
           paymentIntentId: paymentIntent.id,
+          paymentId: paymentIntent.payment_method,
+          amount: amount,
+          status: 'pending',
         });
-
-        // Proceed to reduce quantities in the database for cart items
-        // for (let item of carts) {
-        //   await axiosSecure.patch(`/plants/quantity/${item._id}`, {
-        //     quantityToUpdate: item.count,
-        //     status: 'decrease',
-        //   });
-        // }
-        toast.success('Order successful!');
-        onPaymentSuccess(paymentMethod); 
+        Swal.fire({
+          title: "Order successful!",
+          icon: "success",
+        });
+        onPaymentSuccess({ ...paymentMethod, amount });
       } catch {
-        toast.error('Something went wrong while processing your order!');
+        toast.error("Something went wrong while processing your order!");
       }
     } else {
-      toast.error('Payment failed!');
+      toast.error("Payment failed!");
     }
   };
-
-  // Use useEffect to fetch the clientSecret when the component mounts
-  useEffect(() => {
-    const fetchClientSecret = async () => {
-      const cartResponse = await axiosSecure.post('/create-payment-intent', {
-        count: 1,  
-        email: user.email,
-      });
-
-      setClientSecret(cartResponse.data.clientSecret);
-    };
-
-    fetchClientSecret();
-  }, [user.email, axiosSecure]);
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md border my-10">
@@ -145,10 +165,10 @@ const CheckoutForm = ({ onPaymentSuccess }) => {
           )}
         </div>
 
-        <div className="flex items-center justify-between border rounded-lg py-2 px-1">
-          <h1 className="text-primaryTextColor">Grand total price: </h1>
+        <div className="flex items-center justify-between border rounded-lg py-2 px-2">
+          <h1 className="">Grand total price: </h1>
           <div>
-            <p className="text-lg font-bold text-red-500">654 Taka</p>{" "}
+            <p className="text-lg font-bold text-red-500">{totalPrice} Taka</p>{" "}
           </div>
         </div>
 
@@ -188,10 +208,8 @@ const CheckoutForm = ({ onPaymentSuccess }) => {
   );
 };
 
-
 CheckoutForm.propTypes = {
   onPaymentSuccess: PropTypes.func.isRequired,
 };
 
 export default CheckoutForm;
-

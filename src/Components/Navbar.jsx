@@ -8,10 +8,16 @@ import {
 import { IoLanguage } from "react-icons/io5";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../hook/useAuth";
+import useCart from "../hook/useCart";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const navigate = useNavigate();
+  const [carts] = useCart()
+  
+
+  // Calculate total price on the frontend
+const totalPrice = carts.reduce((acc, cart) => acc + cart.unitPrice * cart.count, 0);
 
   const links = (
     <>
@@ -37,8 +43,8 @@ const Navbar = () => {
     <div className="bg-base-100 shadow-lg ">
       <nav className="navbar mx-auto max-w-[1440px]">
         <div className="flex-1">
-          <Link to="/">
-            <a className=" text-xl font-bold text-primaryTextColor">MediMart</a>
+          <Link to="/" className=" text-xl font-bold text-primaryTextColor">
+           MediMart
           </Link>
         </div>
         <div className="flex-none z-50">
@@ -95,16 +101,16 @@ const Navbar = () => {
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                       />
                     </svg>
-                    <span className="badge badge-sm indicator-item">8</span>
+                    <span className="badge badge-sm indicator-item ">{carts?.length}</span>
                   </div>
                 </div>
                 <div
                   tabIndex={0}
-                  className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-36 shadow"
+                  className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-48 shadow"
                 >
                   <div className="card-body">
-                    <span className="text-lg font-bold">0 Items</span>
-                    <span className="text-info">Subtotal: $999</span>
+                    <span className="text-lg font-bold">{carts?.length} Items</span>
+                    <p className="text-black flex items-start gap-1">Subtotal: <span className="flex items-center font-semibold">{totalPrice}</span> Taka </p>
                     <div className="card-actions">
                       <Link to='/cart-page' className="py-1 w-full text-center text-white rounded-lg bg-mainColor ">
                         View cart
