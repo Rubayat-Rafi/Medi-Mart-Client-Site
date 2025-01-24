@@ -43,9 +43,6 @@ const CheckoutForm = ({ onPaymentSuccess }) => {
 
 
 
-
-
-
   const {
     register,
     handleSubmit,

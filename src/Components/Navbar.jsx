@@ -47,7 +47,7 @@ const totalPrice = carts.reduce((acc, cart) => acc + cart.unitPrice * cart.count
            MediMart
           </Link>
         </div>
-        <div className="flex-none z-50">
+        <div className="flex-none z-50 gap-3">
           {user === null && (
             <ul className="menu menu-horizontal px-1">{links}</ul>
           )}
