@@ -3,21 +3,17 @@ import useAuth from "../hook/useAuth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { saveUser } from "../utilities/utils";
-import axios from "axios";
 import toast from "react-hot-toast";
 
 
 const SignIn = () => {
-  const { signInUser , setUser,  handleGoogle, handleFacebook} = useAuth();
+  const { signInUser ,   handleGoogle, handleFacebook} = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-
-
-
 
   const handleSignIn = async data => {
     const email = data.email;
@@ -29,7 +25,7 @@ const SignIn = () => {
      navigate('/')
 
     }catch(error){
-      console.log(error)
+      toast.error(error)
     }
   }
 
@@ -37,16 +33,11 @@ const SignIn = () => {
   const handleGoogleSignIn = async () => {
   try {
     const data = await handleGoogle();  
-
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${data.user.email}`);  
-    
-    const role = response.data?.role || 'user';  
-    await saveUser(data?.user, role);  
-    setUser({ ...data?.user, role });  
-
+    await saveUser(data?.user);  
     navigate('/');
+
   } catch (error) {
-    console.error("Google Sign-In Error:", error);
+    toast.error("Google Sign-In Error:", error);
   }
   }
   // handle facebook SignIn 
@@ -56,7 +47,7 @@ const SignIn = () => {
       await saveUser(data?.user)
       navigate("/");
     } catch (err) {
-      console.log(err);
+      toast.error(err);
     }
   }
 

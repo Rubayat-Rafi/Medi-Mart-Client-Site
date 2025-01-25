@@ -60,8 +60,8 @@ const AddMedicineModal = ({ onClose }) => {
     };
 
     try {
-      const response = await axiosSecure.post(`/medicine`, medicineData);
-      console.log(response);
+     await axiosSecure.post(`/medicine`, medicineData);
+
       toast.success("Medicine Added Successfully!");
     } catch (error) {
       toast.error(`An ${error} Happend.`);

@@ -22,7 +22,7 @@ const ManageUsers = () => {
       toast.success(`Role updated to ${role} successfully!`);
       refetch(); 
     } catch (err) {
-      toast.error("Failed to update role.");
+      toast.error("Failed to update role.", err);
     }
   };
 

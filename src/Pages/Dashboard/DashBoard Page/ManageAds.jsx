@@ -26,7 +26,7 @@ const ManageAds = () => {
       toast.error('Ads request deleted successfully!')
       refetch();
     }catch(error){
-      console.log(error)
+      toast.error(error)
     }
   }
 

@@ -31,12 +31,12 @@ const BannerAdvertise = () => {
         toast.error(`Banner is ${newStatus} now.`);
       }
     }catch(err){
-      console.log(err);
+      toast.error(err);
     }
   };
 
 
-console.log(isToggle)
+toast.error(isToggle)
 
 
   return (

@@ -16,6 +16,7 @@ import useRole from "../../hook/useRole";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 import { FcStatistics } from "react-icons/fc";
 import { MdPayment } from "react-icons/md";
+import toast from "react-hot-toast";
 
 
 
@@ -32,7 +33,7 @@ const Dashboard = () => {
       await logOut();
       navigate("/");
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 

@@ -49,6 +49,7 @@ const Shop = () => {
       medicine?.price,
       medicine?.discount
     );
+
     const selectCart = {
       name: medicine?.itemName,
       image: medicine?.image,
@@ -58,19 +59,17 @@ const Shop = () => {
       count: medicine?.counter,
       unitPrice: discountPrice,
       cartId: medicine?._id,
+      sellerEmail : medicine?.seller?.email,
     };
 
     try {
       if (user) {
-        const result = await axiosSecure.post("/cart", selectCart);
-        console.log(result);
+        await axiosSecure.post("/cart", selectCart);
         navigate("/cart-page");
         toast.success("Product added in the cart.");
 
       } else {
-        navigate("/join-us/signup", {
-          state: { from: window.location.pathname },
-        });
+        navigate("/join-us/signup");
         toast.error("Please SignUp before making a purchase.");
       }
     } catch (error) {
@@ -89,7 +88,6 @@ const Shop = () => {
             type="text"
             placeholder="Search for products..."
             value=""
-            //   onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full max-w-md px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#059669] focus:outline-none"
           />
           <button className="">

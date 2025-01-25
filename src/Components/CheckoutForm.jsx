@@ -21,6 +21,37 @@ const CheckoutForm = ({ onPaymentSuccess }) => {
     0
   );
 
+
+
+// carts.forEach(async (cart) => {
+//   const order = {
+//       buyerEmail: user.email,
+//       sellerEmail: cart.sellerEmail,
+//       totalPrice: cart.price,
+//       quantity: cart.count,
+//       paymentIntentId: paymentIntent.id,
+//       paymentId: paymentIntent.payment_method,
+//       status: 'pending',
+//   };
+
+//   try {
+//     await axiosSecure.post("/order", );
+//     Swal.fire({
+//       title: "Order successful!",
+//       icon: "success",
+//     });
+//     onPaymentSuccess({ ...paymentMethod, amount });
+//   } catch {
+//     toast.error("Something went wrong while processing your order!");
+//   }
+
+
+// });
+
+
+
+
+
   // Use useEffect to fetch the clientSecret when the component mounts
   useEffect(() => {
     const fetchClientSecret = async () => {
@@ -87,22 +118,32 @@ const CheckoutForm = ({ onPaymentSuccess }) => {
     });
 
     if (paymentIntent.status === "succeeded") {
-      try {
-        await axiosSecure.post("/order", {
-          buyerEmail: user.email,
-          paymentIntentId: paymentIntent.id,
-          paymentId: paymentIntent.payment_method,
-          amount: amount,
-          status: 'pending',
-        });
-        Swal.fire({
-          title: "Order successful!",
-          icon: "success",
-        });
-        onPaymentSuccess({ ...paymentMethod, amount });
-      } catch {
-        toast.error("Something went wrong while processing your order!");
-      }
+      carts.forEach(async (cart) => {
+        const order = {
+            buyerEmail: user.email,
+            sellerEmail: cart.sellerEmail,
+            totalPrice: cart.price,
+            quantity: cart.count,
+            paymentIntentId: paymentIntent.id,
+            paymentId: paymentIntent.payment_method,
+            status: 'pending',
+        };
+        try {
+        const res =  await axiosSecure.post("/order", order );
+        console.log(res, 'im wating for individual carts arry ')
+
+          Swal.fire({
+            title: "Order successful!",
+            icon: "success",
+          });
+          onPaymentSuccess({ ...paymentMethod, amount });
+        } catch {
+          toast.error("Something went wrong while processing your order!");
+        }
+      
+      
+      });
+
     } else {
       toast.error("Payment failed!");
     }

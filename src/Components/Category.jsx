@@ -4,7 +4,6 @@ import LoadingSpinner from "./LoadingSpinner";
 import { useQuery } from "@tanstack/react-query";
 
 
-
 const Category = () => {
   const axiosPublic = useAxiosPublic();
 
@@ -24,7 +23,9 @@ const Category = () => {
   if(isLoading) return <LoadingSpinner/>
 
   return (
-    <div className="w-11/12 max-w-[1440px] mx-auto my-8 md:my-14">
+    <div className="bg-gray-100 py-10">
+      <div className="w-11/12 max-w-[1440px] mx-auto my-8 md:my-14">
+        
       <h3 className="text-center text-xl mb-6 font-bold">Product Categories</h3>
       <div className="flex items-center justify-center gap-5 flex-wrap">
         {categorys.map((category, index) => (
@@ -44,6 +45,7 @@ const Category = () => {
             </div>
           </Link>
         ))}
+      </div>
       </div>
     </div>
   );

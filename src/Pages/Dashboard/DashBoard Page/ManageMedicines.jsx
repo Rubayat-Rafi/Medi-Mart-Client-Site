@@ -1,5 +1,4 @@
 import { useState } from "react";
-import AddMedicineModal from "../../../modal/AddMedicineModal";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hook/useAxiosSecure";
 import useAuth from "../../../hook/useAuth";
@@ -8,6 +7,7 @@ import { FaEye } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 import toast from "react-hot-toast";
+import AddMedicineModal from "../../../Modal/AddMedicineModal";
 
 const ManageMedicines = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,14 +45,13 @@ const ManageMedicines = () => {
 
   // delete medicine
   const handleDeleteMedicine = async (id) => {
-    console.log(id);
     try {
       await axiosSecure.delete(`/delete/${id}`);
       // Refetch the data after deletion
       toast.success("Successfully Deleted.");
       refetch();
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 

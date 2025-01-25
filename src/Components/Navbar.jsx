@@ -9,6 +9,7 @@ import { IoLanguage } from "react-icons/io5";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../hook/useAuth";
 import useCart from "../hook/useCart";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -35,7 +36,7 @@ const totalPrice = carts.reduce((acc, cart) => acc + cart.unitPrice * cart.count
       await logOut();
       navigate("/");
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -142,10 +143,10 @@ const totalPrice = carts.reduce((acc, cart) => acc + cart.unitPrice * cart.count
                     <NavLink to={`/dashboard`}>Dashboard</NavLink>
                   </li>
                   <li>
-                    <a>Update Profile</a>
+                    <Link to='dashboard/profile'>Profile </Link>
                   </li>
                   <li className="bg-mainColor text-center w-full hover:bg-secondBgColor rounded-md text-white  mt-0.5">
-                    <a onClick={handleLogOut}>Logout</a>
+                    <Link onClick={handleLogOut}>Logout</Link>
                   </li>
                 </ul>
               </div>

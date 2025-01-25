@@ -72,7 +72,7 @@ const CartPage = () => {
         if (result.isConfirmed) {
           // delete all carts
           try {
-            console.log(carts);
+
             await axiosSecure.delete(`/detele-carts/${user.email}`);
             refetch();
             Swal.fire({
@@ -81,7 +81,7 @@ const CartPage = () => {
               icon: "success",
             });
           } catch (err) {
-            console.log(err);
+            toast.error(err);
           }
         }
       });

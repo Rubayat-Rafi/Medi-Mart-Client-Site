@@ -43,29 +43,29 @@ const CategoryProducts = () => {
       medicine?.discount
     );
     const selectCart = {
-      name: medicine.itemName,
-      image: medicine.image,
+      name: medicine?.itemName,
+      image: medicine?.image,
       price: discountPrice,
-      quantity: medicine.quantity,
+      quantity: medicine?.quantity,
       buyerEmail: user?.email,
-      count: medicine?.counter
+      count: medicine?.counter,
+      unitPrice: discountPrice,
+      cartId: medicine?._id,
+      sellerEmail : medicine?.seller?.email,
     };
 
     try {
       if (user) {
-        const result = await axiosSecure.post("/cart", selectCart);
-        console.log(result);
+        await axiosSecure.post("/cart", selectCart);
         navigate("/cart-page");
         toast.success("Product added in the cart.");
 
       } else {
-        navigate("/join-us/signup", {
-          state: { from: window.location.pathname },
-        });
+        navigate("/join-us/signup");
         toast.error("Please SignUp before making a purchase.");
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -74,7 +74,7 @@ const CategoryProducts = () => {
   return (
     <div className="mx-auto max-w-[1440px] w-11/12 my-10">
       <div className=" mb-4 ">
-        <h2 className="text-xl font-bold">Category : Medicines</h2>
+        <h2 className="text-xl font-bold">Category : {category} Medicines</h2>
       </div>
 
       {categorys.length === 0 ? (

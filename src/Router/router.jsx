@@ -20,6 +20,7 @@ import Statistics from "../Pages/Dashboard/Statistics";
 import PaymentHistory from "../Pages/Dashboard/DashBoard Page/PaymentHistory";
 import CheckoutPage from "../Pages/Dashboard/CheckoutPage";
 import InvoicePage from "../Pages/InvoicePage";
+import Profile from "../Pages/Dashboard/DashBoard Page/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -99,6 +100,10 @@ export const router = createBrowserRouter([
             {
                 path: 'payment-history',
                 element: <PrivetRoute>  <PaymentHistory />  </PrivetRoute>
+            },
+            {
+                path: 'Profile',
+                element: <PrivetRoute>  <Profile /> </PrivetRoute>
             },
         ]
     }

@@ -13,7 +13,7 @@ const useOrders = () => {
       } = useQuery({
         queryKey: ["orders", user?.email],
         queryFn: async () => {
-          const { data } = await axiosSecure(`/orders-history/${user?.email}`);
+          const { data } = await axiosSecure.get(`/orders-history/${user?.email}`);
           return data;
         },
       });

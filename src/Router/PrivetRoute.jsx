@@ -9,7 +9,7 @@ const PrivetRoute = ({children}) => {
   
     if (loading) return <LoadingSpinner />
     if (user) return children
-    return <Navigate to='/join-us' state={{ from: location }} replace='true' />
+    return <Navigate to='/join-us' state={{ from: location.pathname }} replace />
   }
 
 PrivetRoute.propTypes = {

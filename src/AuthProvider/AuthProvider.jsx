@@ -73,7 +73,6 @@ useEffect(() => {
       axiosPublic.post("/jwt", userInfo).then((res) => {
         if (res.data.token) {
           localStorage.setItem("access-token", res.data.token);
-          setUser({ ...currentUser, role: res.data.role || "user" }); 
         }
       });
     } else {
@@ -88,7 +87,8 @@ useEffect(() => {
 }, [axiosPublic]);
 
 
-
+  console.log(user)
+  
   const authData = {
     createUser,
     user,

@@ -3,12 +3,13 @@ import { BsFillCartPlusFill, BsFillHouseDoorFill } from "react-icons/bs";
 import { Calendar } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import toast from "react-hot-toast";
 
 const AdminStatistics = () => {
 
 
     const handleSelect = (date) => {
-        console.log(date); // native Date object
+      toast.error(date); // native Date object
     }
       
 

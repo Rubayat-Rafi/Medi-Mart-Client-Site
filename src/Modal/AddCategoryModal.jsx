@@ -25,8 +25,6 @@ const AddCategoryModal = ({ onClose, refetch }) => {
       adminEmail: user?.email,
     };
 
-    console.log(categoryData);
-
     try {
       await axiosSecure.post("/category", categoryData);
       toast.success("Category post successfully!");
