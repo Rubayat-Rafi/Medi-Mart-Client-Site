@@ -21,6 +21,8 @@ import PaymentHistory from "../Pages/Dashboard/DashBoard Page/PaymentHistory";
 import CheckoutPage from "../Pages/Dashboard/CheckoutPage";
 import InvoicePage from "../Pages/InvoicePage";
 import Profile from "../Pages/Dashboard/DashBoard Page/Profile";
+import SellerHome from "../Pages/Dashboard/DashBoard Page/SellerHome";
+import SalesReportPage from "../Pages/Dashboard/DashBoard Page/SalesReportPage";
 
 export const router = createBrowserRouter([
     {
@@ -75,7 +77,15 @@ export const router = createBrowserRouter([
         children : [
             {
                 index: true,
-                element: <PrivetRoute><Statistics/></PrivetRoute>
+                element: <PrivetRoute> <AdminRoute> <Statistics/> </AdminRoute> </PrivetRoute>
+            },
+            {
+                path: 'seller-home',
+                element: <PrivetRoute> <SellerRoute> <SellerHome/> </SellerRoute> </PrivetRoute>
+            },
+            {
+                path: 'sales-report',
+                element: <PrivetRoute> <AdminRoute> <SalesReportPage/> </AdminRoute> </PrivetRoute>
             },
             {
                 path: 'manage-medicines',

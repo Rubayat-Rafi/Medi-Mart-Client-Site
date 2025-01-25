@@ -18,10 +18,6 @@ import { FcStatistics } from "react-icons/fc";
 import { MdPayment } from "react-icons/md";
 import toast from "react-hot-toast";
 
-
-
-
-
 const Dashboard = () => {
   const { logOut } = useAuth();
   const navigate = useNavigate();
@@ -78,8 +74,8 @@ const Dashboard = () => {
                 <FaHome className="mr-3" /> Home
               </NavLink>
 
-              {/* Statistics  */}
-              {role === "admin" && (
+              {/* Statistics */}
+              {role === "admin"  && (
                 <NavLink
                   to="/dashboard"
                   end
@@ -88,10 +84,43 @@ const Dashboard = () => {
                       isActive ? "bg-gray-700" : ""
                     }`
                   }
+                  replace
                 >
                   <FcStatistics className="mr-3" /> Statistics
                 </NavLink>
               )}
+
+              {/* sales-report */}
+              {role === "admin"  && (
+                <NavLink
+                  to="/dashboard/sales-report"
+                  end
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded hover:bg-gray-700 ${
+                      isActive ? "bg-gray-700" : ""
+                    }`
+                  }
+                  replace
+                >
+                  <FcStatistics className="mr-3" /> Sales Report
+                </NavLink>
+              )}
+              {/* Seller home page */}
+              {role === "seller" && (
+                <NavLink
+                  to="/dashboard/seller-home"
+                  end
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded hover:bg-gray-700 ${
+                      isActive ? "bg-gray-700" : ""
+                    }`
+                  }
+                  replace
+                >
+                  <FcStatistics className="mr-3" /> Seller Statistics
+                </NavLink>
+              )}
+
               {/* Manage Medicines */}
               {role === "seller" && (
                 <NavLink
@@ -107,22 +136,21 @@ const Dashboard = () => {
               )}
 
               {/*Ask for Ads */}
-              {role === "admin" ||
-                (role === "seller" && (
-                  <NavLink
-                    to="/dashboard/ads"
-                    className={({ isActive }) =>
-                      `flex items-center p-2 rounded hover:bg-gray-700 ${
-                        isActive ? "bg-gray-700" : ""
-                      }`
-                    }
-                  >
-                    <RiAdvertisementFill className="mr-3" /> Ask for Ads
-                  </NavLink>
-                ))}
+              {role === "seller" && (
+                <NavLink
+                  to="/dashboard/ads"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 rounded hover:bg-gray-700 ${
+                      isActive ? "bg-gray-700" : ""
+                    }`
+                  }
+                >
+                  <RiAdvertisementFill className="mr-3" /> Ask for Ads
+                </NavLink>
+              )}
 
               {/* Manage category */}
-              { role === "admin" && (
+              {role === "admin" && (
                 <NavLink
                   to="/dashboard/manage-category"
                   className={({ isActive }) =>
@@ -174,7 +202,7 @@ const Dashboard = () => {
                     }`
                   }
                 >
-                  <MdPayment  className="mr-3" /> Payment History
+                  <MdPayment className="mr-3" /> Payment History
                 </NavLink>
               )}
 

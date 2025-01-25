@@ -93,15 +93,26 @@ const CartPage = () => {
     if (carts.length === 0) {
       toast.error("please add cart before checkout.");
     } else {
+      const hasZeroQuantity = carts.some((item) => item.count === 0);
+
+      if (hasZeroQuantity) {
+        toast.error("Please ensure all items in the cart have a quantity greater than 0.");
+        return;
+      }
+    
       navigate("/checkout-page");
     }
   };
 
   const handleUpdateCart = async (id, price, quantity, count, action) => {
+
+    if(count === 0){
+      return toast.error('Please increase quantity.')
+    }
+
     if (action === "increase" && quantity <= 0) {
       return toast.error("Stock not available!");
     }
-
     if (action === "decrease" && count <= 0) {
       return toast.error("Cannot decrease below 0!");
     }
@@ -115,8 +126,7 @@ const CartPage = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-          refetch(); // Fetch the updated cart data
-          toast.success("Cart updated successfully!");
+          refetch(); 
         }
       })
       .catch((err) => {
@@ -178,7 +188,7 @@ const CartPage = () => {
                       />
                     </td>
                     <td>{cart.name}</td>
-                    <td>{cart.price} Taka</td>
+                    <td>{(cart.price).toFixed(2)} Taka</td>
                     <td>{cart?.quantity}</td>
                     <td className="space-x-3">
                       <button

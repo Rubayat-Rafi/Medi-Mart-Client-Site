@@ -19,26 +19,18 @@ const SignIn = () => {
     const email = data.email;
     const password = data.password;
 
-    try{
      await signInUser(email, password);
      toast.success('Successfully Signin')
      navigate('/')
-
-    }catch(error){
-      toast.error(error)
-    }
   }
 
   // handle Google SignIn 
   const handleGoogleSignIn = async () => {
-  try {
     const data = await handleGoogle();  
     await saveUser(data?.user);  
+
     navigate('/');
 
-  } catch (error) {
-    toast.error("Google Sign-In Error:", error);
-  }
   }
   // handle facebook SignIn 
   const handleFacebookSignIn = async () => {

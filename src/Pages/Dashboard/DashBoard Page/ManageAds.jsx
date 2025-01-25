@@ -43,7 +43,7 @@ const ManageAds = () => {
       </div>
 
       {/* table */}
-      {ads.length < 0 ? (
+      {ads.length === 0 ? (
         <div>No Data Found...</div>
       ) : (
         <div className="overflow-x-auto border  rounded-lg">
