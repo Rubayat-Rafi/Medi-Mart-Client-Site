@@ -106,10 +106,6 @@ const CartPage = () => {
 
   const handleUpdateCart = async (id, price, quantity, count, action) => {
 
-    if(count === 0){
-      return toast.error('Please increase quantity.')
-    }
-
     if (action === "increase" && quantity <= 0) {
       return toast.error("Stock not available!");
     }

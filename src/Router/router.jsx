@@ -16,13 +16,16 @@ import AdminRoute from "./AdminRoute";
 import ManageCategory from "../Pages/Dashboard/DashBoard Page/ManageCategory";
 import SellerRoute from "./SellerRoute";
 import ManageAds from "../Pages/Dashboard/DashBoard Page/ManageAds";
-import Statistics from "../Pages/Dashboard/Statistics";
+
 import PaymentHistory from "../Pages/Dashboard/DashBoard Page/PaymentHistory";
 import CheckoutPage from "../Pages/Dashboard/CheckoutPage";
 import InvoicePage from "../Pages/InvoicePage";
-import Profile from "../Pages/Dashboard/DashBoard Page/Profile";
+
 import SellerHome from "../Pages/Dashboard/DashBoard Page/SellerHome";
 import SalesReportPage from "../Pages/Dashboard/DashBoard Page/SalesReportPage";
+
+import Statistics from "../Pages/Dashboard/Statistics";
+import Profile from "../Pages/Dashboard/DashBoard Page/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -113,7 +116,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'Profile',
-                element: <PrivetRoute>  <Profile /> </PrivetRoute>
+                element: <PrivetRoute>  <Profile/>  </PrivetRoute>
             },
         ]
     }

@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hook/useAxiosSecure";
-import { useState } from "react";
+
 import {toast} from 'react-hot-toast';
 
 
 const BannerAdvertise = () => {
 
   const axiosSecure = useAxiosSecure();
-  const [isToggle, setIsToggle] = useState(false);
+
 
   const { data: banners = [] } = useQuery({
     queryKey: ["banner"],
@@ -23,11 +23,9 @@ const BannerAdvertise = () => {
     try{
     await axiosSecure.patch(`/banner/status/${id}`, { status: newStatus});
      if(newStatus === "active"){
-      setIsToggle(true);
        toast.success(`Banner is ${newStatus} now.`);
       }
       else{
-        setIsToggle(false);
         toast.error(`Banner is ${newStatus} now.`);
       }
     }catch(err){
@@ -80,9 +78,6 @@ const BannerAdvertise = () => {
                           defaultChecked={banner.status === "active" ? true : false}
                           onChange={(e)=> handleToggle(e, banner._id)}
                         />
-                        <span className="text-[10px]">
-                        {isToggle ? "Remove Slide" : "Add Slide"}
-                        </span>
                       </div>
                     </td>
                   </tr>

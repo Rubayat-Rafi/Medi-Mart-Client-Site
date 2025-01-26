@@ -94,7 +94,6 @@ const Dashboard = () => {
               {role === "admin"  && (
                 <NavLink
                   to="/dashboard/sales-report"
-                  end
                   className={({ isActive }) =>
                     `flex items-center p-2 rounded hover:bg-gray-700 ${
                       isActive ? "bg-gray-700" : ""
@@ -217,6 +216,8 @@ const Dashboard = () => {
               >
                 <FaUser className="mr-3" /> Profile
               </NavLink>
+
+
               {/* logout  */}
               <NavLink
                 onClick={handleLogOut}

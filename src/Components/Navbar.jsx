@@ -10,11 +10,13 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../hook/useAuth";
 import useCart from "../hook/useCart";
 import toast from "react-hot-toast";
+import useRole from "../hook/useRole";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const navigate = useNavigate();
   const [carts] = useCart()
+  const [role] = useRole()
   
 
   // Calculate total price on the frontend
@@ -139,9 +141,21 @@ const totalPrice = carts.reduce((acc, cart) => acc + cart.unitPrice * cart.count
                   className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-40 p-2 shadow"
                 >
                   {links}
+                  {role === 'user' && (
                   <li>
-                    <NavLink to={`/dashboard`}>Dashboard</NavLink>
+                    <NavLink to={`/dashboard/profile`}>  Dashboard  </NavLink>
                   </li>
+                  )}
+                  {role === 'admin' && (
+                  <li>
+                    <NavLink to={`/dashboard`} >  Dashboard  </NavLink>
+                  </li>
+                  )}
+                  {role === 'seller' && (
+                  <li>
+                    <NavLink to={`/dashboard/seller-home`}  >  Dashboard  </NavLink>
+                  </li>
+                  )}
                   <li>
                     <Link to='dashboard/profile'>Profile </Link>
                   </li>

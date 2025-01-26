@@ -28,9 +28,7 @@ const SignIn = () => {
   const handleGoogleSignIn = async () => {
     const data = await handleGoogle();  
     await saveUser(data?.user);  
-
     navigate('/');
-
   }
   // handle facebook SignIn 
   const handleFacebookSignIn = async () => {
