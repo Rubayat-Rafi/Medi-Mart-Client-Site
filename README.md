@@ -44,6 +44,15 @@ Medi Mart is a full-stack e-commerce platform designed to facilitate the buying 
 
 ## Live Links
 
+- Admin email: rafi@gmail.com
+- Admin password: Rafi1234
 
+- Seller email: sakib@gmail.com
+- Seller password: Sakib1234
+
+- Front-end Live Site Link: https://medimart-678e7.web.app
+
+- Client Side Github Repository Link:https://github.com/Programming-Hero-Web-Course4/b10a12-client-side-Rubayat-Rafi
+- Server Side Github Repository Link: https://github.com/Programming-Hero-Web-Course4/b10a12-server-side-Rubayat-Rafi
 
 
