@@ -129,9 +129,7 @@ const CheckoutForm = ({ onPaymentSuccess }) => {
             status: 'pending',
         };
         try {
-        const res =  await axiosSecure.post("/order", order );
-        console.log(res, 'im wating for individual carts arry ')
-
+        await axiosSecure.post("/order", order );
           Swal.fire({
             title: "Order successful!",
             icon: "success",

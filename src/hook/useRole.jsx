@@ -14,7 +14,7 @@ const { data: role, isLoading } = useQuery({
         return data.role; 
    },
  }); 
- console.log(role)
+
     return  [role, isLoading];
 };
 

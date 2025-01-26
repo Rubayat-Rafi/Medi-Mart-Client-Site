@@ -87,7 +87,6 @@ useEffect(() => {
 }, [axiosPublic]);
 
 
-  console.log(user)
   
   const authData = {
     createUser,
